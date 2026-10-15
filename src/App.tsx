@@ -5,6 +5,7 @@ import ChannelGuide from "@/components/ChannelGuide";
 import SeasonalEffects from "@/components/SeasonalEffects";
 import Countdown from "@/components/Countdown";
 import MexicoClock from "@/components/MexicoClock";
+import HalloweenDecor from "@/components/HalloweenDecor";
 import { getActiveTheme } from "@/data";
 import { mercadoPagoHref } from "@/data/pagos";
 import { getCurrentAndNext, getSeenPrograms, toggleSeen, seenKey } from "@/lib/scheduler";
@@ -56,14 +57,16 @@ export default function App() {
   }, []);
 
   const schedule = theme.programs;
+  const haunted = seasonMode === "halloween";
   let lastDaypart = "";
 
   return (
     <div
-      className={`min-h-screen bg-gradient-to-b ${theme.bgGradient} relative overflow-x-hidden ${theme.decoration.backgroundPattern}`}
-      style={{ backgroundColor: "#0f0f11" }}
+      className={`min-h-screen bg-gradient-to-b ${theme.bgGradient} relative overflow-x-hidden ${theme.decoration.backgroundPattern} ${haunted ? "theme-halloween" : ""}`}
+      style={{ backgroundColor: haunted ? "#07040e" : "#0f0f11" }}
     >
       <SeasonalEffects effect={theme.effect} />
+      {haunted && <HalloweenDecor />}
 
       <div
         className="fixed inset-0 pointer-events-none opacity-20"
@@ -93,8 +96,13 @@ export default function App() {
           <div className="flex items-center gap-3">
             <CafeButton href={cafeHref} accent={theme.accent} />
             <MexicoClock
-              className="px-4 py-2 rounded-xl text-xl sm:text-2xl font-mono font-bold tabular-nums"
-              style={{
+              className={`px-4 py-2 text-xl sm:text-2xl font-mono font-bold tabular-nums ${haunted ? "tomb-card" : "rounded-xl"}`}
+              style={haunted ? {
+                background: "linear-gradient(180deg, #3a2258, #140a1c)",
+                border: "1px solid #ff8c1a",
+                color: "#ffe7c2",
+                boxShadow: "0 0 14px rgba(255,140,26,0.28)",
+              } : {
                 background: "rgba(26,26,30,0.6)",
                 border: `1px solid ${theme.accent}55`,
                 color: theme.accent,
@@ -110,7 +118,7 @@ export default function App() {
             border: `1px solid ${theme.accent}40`,
           }}
         >
-          <p className={`text-xs sm:text-sm font-bold tracking-wider text-center ${theme.fontClass}`} style={{ color: theme.accent }}>
+          <p className={`font-bold tracking-wider text-center ${haunted ? "text-sm sm:text-base text-[#ffe7c2]" : `text-xs sm:text-sm ${theme.fontClass}`}`} style={haunted ? undefined : { color: theme.accent }}>
             {theme.decoration.headerBanner}
           </p>
         </div>
@@ -206,8 +214,8 @@ export default function App() {
 
             {activeProgram && (
               <div
-                className="rounded-xl p-5"
-                style={{ background: "rgba(26,26,30,0.5)", border: `1px solid ${theme.accent}28` }}
+                className={haunted ? "haunted-panel rounded-2xl p-5" : "rounded-xl p-5"}
+                style={haunted ? undefined : { background: "rgba(26,26,30,0.5)", border: `1px solid ${theme.accent}28` }}
               >
                 <div className="flex items-center gap-2 mb-3 flex-wrap">
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded" style={{ background: `${theme.accent2}22`, color: "#fff" }}>
@@ -231,7 +239,7 @@ export default function App() {
                     </span>
                   )}
                 </div>
-                <h2 className="text-lg font-bold text-white mb-1">{activeProgram.titulo}</h2>
+                <h2 className={haunted ? "font-creepy text-2xl text-[#ffe7c2] leading-tight mb-2" : "text-lg font-bold text-white mb-1"}>{activeProgram.titulo}</h2>
                 <p className="text-sm text-white/80 leading-relaxed mb-3">{activeProgram.sinopsis}</p>
                 <p className="text-xs text-white/70">
                   {formatMinute12(activeProgram.startMinute)} – {formatMinute12(activeProgram.startMinute + activeProgram.duration)}
@@ -244,13 +252,15 @@ export default function App() {
 
           <aside className="flex flex-col gap-5">
             {seasonMode !== "pre-halloween" && (
-              <div className="rounded-2xl p-5" style={{ background: "rgba(26,26,30,0.5)", border: `1px solid ${theme.accent}28` }}>
+              <div className={haunted ? "haunted-panel rounded-2xl p-5" : "rounded-2xl p-5"} style={haunted ? undefined : { background: "rgba(26,26,30,0.5)", border: `1px solid ${theme.accent}28` }}>
                 <Countdown />
               </div>
             )}
 
-            <div className="rounded-2xl p-5" style={{ background: "rgba(26,26,30,0.5)", border: `1px solid ${theme.accent}28` }}>
-              <h2 className="text-xs font-bold uppercase tracking-wider text-white/75 mb-3">Programación de hoy</h2>
+            <div className={haunted ? "haunted-panel rounded-2xl p-5" : "rounded-2xl p-5"} style={haunted ? undefined : { background: "rgba(26,26,30,0.5)", border: `1px solid ${theme.accent}28` }}>
+              <h2 className={haunted ? "font-creepy text-2xl text-[#ffb067] leading-none mb-3" : "text-xs font-bold uppercase tracking-wider text-white/75 mb-3"}>
+                Programación de hoy
+              </h2>
               <div className="space-y-2 max-h-[28rem] overflow-y-auto custom-scrollbar pr-1">
                 {schedule.map((program) => {
                   const daypart = daypartLabel(program.startMinute);
@@ -261,15 +271,20 @@ export default function App() {
                   return (
                     <div key={program.id}>
                       {showDaypart && (
-                        <p className="text-[10px] font-bold uppercase tracking-wider text-white/60 pt-2 pb-1">{daypart}</p>
+                        <p className={haunted ? "text-[11px] font-bold uppercase tracking-wider text-[#d4ffb8] pt-2 pb-1" : "text-[10px] font-bold uppercase tracking-wider text-white/60 pt-2 pb-1"}>{daypart}</p>
                       )}
                       <button
                         type="button"
                         onClick={() => handleSelectProgram(program)}
-                        className="w-full text-left rounded-lg p-2.5 transition-colors"
+                        className={`w-full text-left p-2.5 transition-colors ${haunted ? "tomb-card" : "rounded-lg"}`}
                         style={{
-                          background: isActive ? `${theme.accent}18` : "rgba(255,255,255,0.03)",
-                          border: `1px solid ${isActive ? theme.accent + "55" : "transparent"}`,
+                          background: haunted
+                            ? isActive
+                              ? "linear-gradient(180deg, rgba(255,140,26,0.32), rgba(32,14,48,0.95))"
+                              : "linear-gradient(180deg, rgba(36,20,52,0.95), rgba(12,6,18,0.95))"
+                            : isActive ? `${theme.accent}18` : "rgba(255,255,255,0.03)",
+                          border: `1px solid ${isActive ? theme.accent : haunted ? "rgba(214,196,255,0.4)" : "transparent"}`,
+                          boxShadow: haunted && isActive ? "0 0 12px rgba(182,255,138,0.22)" : undefined,
                         }}
                       >
                         <div className="flex items-center gap-2">

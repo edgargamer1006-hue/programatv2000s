@@ -15,10 +15,10 @@ const decPreHalloween: ThemeDecoration = {
 };
 
 const decHalloween: ThemeDecoration = {
-  frameIcons: ["🎃", "👻", "🦇", "💀", "🕷️", "🕸️"],
+  frameIcons: ["🎃", "🦇", "👻", "🕸️", "💀", "🕷️"],
   headerBanner: "🎃 ESPECIAL DE TERROR — OCTUBRE 31 DÍAS DE MIEDO 👻",
   backgroundPattern: "pattern-halloween",
-  frameAccent: "#ff6600",
+  frameAccent: "#ff8c1a",
 };
 
 const decDiaMuertos: ThemeDecoration = {
@@ -83,9 +83,9 @@ const themeHalloween: MonthTheme = {
   catalogKey: "halloween",
   name: "Especial de Halloween",
   subtitle: "Canal del Terror — 24/7 Espeluznante",
-  accent: "#ff6600",
-  accent2: "#9b2d9b",
-  bgGradient: "from-[#0f0f11] via-[#1a0a1e] to-[#0f0f11]",
+  accent: "#ff8c1a",
+  accent2: "#d6c4ff",
+  bgGradient: "from-[#07040e] via-[#1a0b28] to-[#07040e]",
   fontClass: "font-creepy",
   channelName: "RETRO TOON HORROR",
   channelLogo: "RTH",

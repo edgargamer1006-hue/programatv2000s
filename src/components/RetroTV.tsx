@@ -133,38 +133,43 @@ export default function RetroTV({
         : "#00b4ff";
 
   const showVideo = Boolean(videoUrl) && !mediaError && !showStatic;
+  const haunted = seasonMode === "halloween";
 
   return (
     <div className="relative w-full max-w-4xl mx-auto">
       <div
         className="absolute inset-0 blur-3xl opacity-10 rounded-full pointer-events-none"
-        style={{ background: `radial-gradient(circle, ${accent}, transparent 70%)` }}
+        style={{ background: `radial-gradient(circle, ${haunted ? "#b6ff8a" : accent}, transparent 70%)` }}
       />
 
       <div
-        className="relative rounded-2xl p-4 sm:p-6 shadow-2xl"
-        style={{
+        className={haunted ? "haunted-cabinet relative rounded-[1.7rem] p-3 sm:p-5" : "relative rounded-2xl p-4 sm:p-6 shadow-2xl"}
+        style={haunted ? undefined : {
           background: "linear-gradient(145deg, #1a1a1e, #14141a, #0f0f11)",
           border: "1px solid rgba(255,255,255,0.04)",
           boxShadow: `0 0 30px ${accent}08, inset 0 1px 2px rgba(255,255,255,0.05), 0 16px 48px rgba(0,0,0,0.7)`,
         }}
       >
-        <div className="absolute top-1.5 left-2 flex gap-0.5 text-[10px] opacity-60 pointer-events-none" aria-hidden="true">
+        {haunted && (
+          <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-3xl drop-shadow" aria-hidden="true">🎃</span>
+        )}
+        <div className={`absolute top-2 left-3 flex gap-1 pointer-events-none ${haunted ? "text-base" : "text-[10px] opacity-60"}`} aria-hidden="true">
           {decoration.frameIcons.slice(0, 3).map((icon, i) => (
             <span key={i} className="frame-icon-float" style={{ animationDelay: `${i * 0.5}s` }}>{icon}</span>
           ))}
         </div>
-        <div className="absolute top-1.5 right-2 flex gap-0.5 text-[10px] opacity-60 pointer-events-none" aria-hidden="true">
+        <div className={`absolute top-2 right-3 flex gap-1 pointer-events-none ${haunted ? "text-base" : "text-[10px] opacity-60"}`} aria-hidden="true">
           {decoration.frameIcons.slice(3).map((icon, i) => (
             <span key={i} className="frame-icon-float" style={{ animationDelay: `${i * 0.7}s` }}>{icon}</span>
           ))}
         </div>
 
-        <div className="relative rounded-lg overflow-hidden bg-black mx-auto"
+        <div
+          className={`relative rounded-lg overflow-hidden bg-black mx-auto mt-4 ${haunted ? "haunted-bezel crt-flicker" : ""}`}
           style={{
             aspectRatio: "4/3",
-            boxShadow: `inset 0 0 80px rgba(0,0,0,0.9), inset 0 0 20px ${accent}08`,
-            border: "2px solid #0a0a0c",
+            boxShadow: haunted ? undefined : `inset 0 0 80px rgba(0,0,0,0.9), inset 0 0 20px ${accent}08`,
+            border: haunted ? undefined : "2px solid #0a0a0c",
           }}
         >
           <div
@@ -355,15 +360,15 @@ export default function RetroTV({
         </div>
 
         <div className="mt-2 flex items-center justify-center gap-2">
-          <span className="text-[10px] text-zinc-400 tracking-[0.3em] uppercase">RetroToon</span>
-          <span className="text-[10px] text-zinc-500">•</span>
-          <span className={`text-[10px] text-zinc-300 tracking-wider ${fontClass}`}>{themeName}</span>
+          <span className={`text-[10px] tracking-[0.3em] uppercase ${haunted ? "text-[#ffb067]" : "text-zinc-400"}`}>RetroToon</span>
+          <span className={`text-[10px] ${haunted ? "text-[#d4ffb8]" : "text-zinc-500"}`}>•</span>
+          <span className={`text-[10px] tracking-wider ${haunted ? "text-[#ffe7c2] font-semibold" : `text-zinc-300 ${fontClass}`}`}>{themeName}</span>
         </div>
       </div>
 
       <div className="flex justify-between px-12 max-w-xs mx-auto mt-1.5" aria-hidden="true">
-        <div className="w-3.5 h-5 bg-gradient-to-b from-[#1a1a1e] to-[#0f0f11] rounded-b-md" />
-        <div className="w-3.5 h-5 bg-gradient-to-b from-[#1a1a1e] to-[#0f0f11] rounded-b-md" />
+        <div className={`w-3.5 h-5 rounded-b-md ${haunted ? "bg-gradient-to-b from-[#6a3d1c] to-[#1c100a]" : "bg-gradient-to-b from-[#1a1a1e] to-[#0f0f11]"}`} />
+        <div className={`w-3.5 h-5 rounded-b-md ${haunted ? "bg-gradient-to-b from-[#6a3d1c] to-[#1c100a]" : "bg-gradient-to-b from-[#1a1a1e] to-[#0f0f11]"}`} />
       </div>
     </div>
   );

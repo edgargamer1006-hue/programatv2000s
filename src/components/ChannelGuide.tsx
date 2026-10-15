@@ -43,6 +43,7 @@ export default function ChannelGuide({
   const bodyScrollRef = useRef<HTMLDivElement>(null);
 
   const programs = theme.programs;
+  const haunted = theme.seasonMode === "halloween";
   const hours = Array.from({ length: 24 }, (_, i) => i);
   const currentHour = Math.floor(minuteOfDay / 60);
 
@@ -81,7 +82,10 @@ export default function ChannelGuide({
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 z-50 bg-black/92 backdrop-blur-md flex flex-col">
+        <div
+          className={`channel-guide fixed inset-0 z-50 backdrop-blur-md flex flex-col ${haunted ? "" : "bg-black/92"}`}
+          style={haunted ? { background: "radial-gradient(ellipse at 50% 0%, #321454 0%, #07040e 52%)" } : undefined}
+        >
           <div
             className="flex items-center justify-between px-4 sm:px-6 py-3 border-b-2"
             style={{ borderColor: theme.accent, background: `linear-gradient(90deg, ${theme.accent}18, ${theme.accent2}12)` }}
@@ -211,16 +215,18 @@ export default function ChannelGuide({
                           <button
                             type="button"
                             onClick={() => setSelectedProgram(program)}
-                            className="absolute top-1.5 h-[60px] rounded-md px-2 py-1 text-left overflow-hidden"
+                            className={`absolute top-1.5 h-[60px] px-2 py-1 text-left overflow-hidden ${haunted ? "tomb-card" : "rounded-md"}`}
                             style={{
                               left: `${leftPx}px`,
                               width: `${widthPx}px`,
                               background: isSelected
-                                ? `linear-gradient(135deg, ${theme.accent}44, ${theme.accent2}30)`
+                                ? `linear-gradient(180deg, ${theme.accent}66, #2a1244)`
                                 : isCurrent
-                                  ? `linear-gradient(135deg, ${theme.accent}30, ${theme.accent2}18)`
-                                  : "rgba(255,255,255,0.06)",
-                              border: `1px solid ${isSelected ? theme.accent : "rgba(255,255,255,0.16)"}`,
+                                  ? `linear-gradient(180deg, ${theme.accent}44, #1a0c28)`
+                                  : haunted
+                                    ? "linear-gradient(180deg, rgba(48,28,72,0.95), rgba(14,8,22,0.95))"
+                                    : "rgba(255,255,255,0.06)",
+                              border: `1px solid ${isSelected || isCurrent ? theme.accent : haunted ? "rgba(182,255,138,0.4)" : "rgba(255,255,255,0.16)"}`,
                             }}
                           >
                             <p className="text-[10px] font-bold text-white truncate">{program.titulo}</p>
@@ -235,8 +241,8 @@ export default function ChannelGuide({
             </div>
 
             <div
-              className="lg:w-96 flex-shrink-0 border-t lg:border-t-0 lg:border-l overflow-y-auto custom-scrollbar"
-              style={{ borderColor: `${theme.accent}33`, background: "rgba(0,0,0,0.5)" }}
+              className={`lg:w-96 flex-shrink-0 border-t lg:border-t-0 lg:border-l overflow-y-auto custom-scrollbar ${haunted ? "haunted-panel border-0" : ""}`}
+              style={haunted ? undefined : { borderColor: `${theme.accent}33`, background: "rgba(0,0,0,0.5)" }}
             >
               {selectedProgram ? (
                 <div className="p-5">
@@ -274,8 +280,11 @@ export default function ChannelGuide({
                         onSelectProgram(selectedProgram);
                         setIsOpen(false);
                       }}
-                      className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold transition-all active:scale-95"
-                      style={{ background: `linear-gradient(135deg, ${theme.accent}, ${theme.accent2})`, color: "#000" }}
+                      className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold transition-all active:scale-95 ${haunted ? "tomb-card" : "rounded-xl"}`}
+                      style={{
+                        background: haunted ? "#ff8c1a" : `linear-gradient(135deg, ${theme.accent}, ${theme.accent2})`,
+                        color: haunted ? "#1a0804" : "#000",
+                      }}
                     >
                       <Play size={16} aria-hidden="true" /> Ver ahora
                     </button>

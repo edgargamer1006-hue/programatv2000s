@@ -42,7 +42,13 @@ export default function SeasonalEffects({ effect }: SeasonalEffectsProps) {
     return [];
   }, [effect, reduceMotion]);
 
-  if (effect === "none" || reduceMotion) return null;
+  if (effect === "none") return null;
+
+  if (reduceMotion && effect === "neon-flicker") {
+    return <HalloweenAtmosphere animate={false} />;
+  }
+
+  if (reduceMotion) return null;
 
   if (effect === "snow") {
     return (
@@ -96,19 +102,7 @@ export default function SeasonalEffects({ effect }: SeasonalEffectsProps) {
   }
 
   if (effect === "neon-flicker") {
-    return (
-      <div className="pointer-events-none fixed inset-0 z-10 overflow-hidden" aria-hidden="true">
-        <div className="absolute inset-0 bg-gradient-to-b from-purple-900/10 via-transparent to-orange-900/10" />
-        <div
-          className="season-drift absolute top-1/4 left-1/3 w-80 h-80 rounded-full blur-3xl"
-          style={{ background: "#ff6600", opacity: 0.08, animation: "fog-drift 20s ease-in-out infinite" }}
-        />
-        <div
-          className="season-drift absolute bottom-1/4 right-1/4 w-72 h-72 rounded-full blur-3xl"
-          style={{ background: "#9b2d9b", opacity: 0.08, animation: "fog-drift 25s ease-in-out infinite reverse" }}
-        />
-      </div>
-    );
+    return <HalloweenAtmosphere animate />;
   }
 
   if (effect === "pre-halloween") {
@@ -143,4 +137,44 @@ export default function SeasonalEffects({ effect }: SeasonalEffectsProps) {
   }
 
   return null;
+}
+
+const BATS = [
+  { top: "11%", left: "6%", delay: "0s", size: "text-2xl" },
+  { top: "20%", left: "16%", delay: "1.4s", size: "text-lg" },
+  { top: "8%", right: "22%", delay: "0.6s", size: "text-xl" },
+  { top: "18%", right: "8%", delay: "2s", size: "text-lg" },
+];
+
+function HalloweenAtmosphere({ animate }: { animate: boolean }) {
+  return (
+    <div className="pointer-events-none fixed inset-0 z-10 overflow-hidden" aria-hidden="true">
+      <div
+        className="absolute top-8 right-[6%] w-16 h-16 sm:w-28 sm:h-28 rounded-full"
+        style={{
+          background: "radial-gradient(circle at 35% 35%, #f7ffe8 0%, #d5f7b0 42%, #6f9164 70%, transparent 72%)",
+          boxShadow: "0 0 36px rgba(190, 255, 170, 0.35)",
+          opacity: 0.72,
+        }}
+      />
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#1a0a28]/75 via-[#12081c]/30 to-transparent" />
+      <div
+        className="season-drift absolute top-1/3 left-[12%] w-80 h-56 rounded-full blur-3xl"
+        style={{ background: "#ff8c1a", opacity: 0.1, animation: animate ? "fog-drift 22s ease-in-out infinite" : "none" }}
+      />
+      <div
+        className="season-drift absolute bottom-[18%] right-[10%] w-72 h-48 rounded-full blur-3xl"
+        style={{ background: "#6b2d9b", opacity: 0.16, animation: animate ? "fog-drift 26s ease-in-out infinite reverse" : "none" }}
+      />
+      {BATS.map((bat) => (
+        <span
+          key={`${bat.top}-${bat.left ?? bat.right}`}
+          className={`absolute opacity-80 ${bat.size} ${animate ? "bat-fly" : ""}`}
+          style={{ top: bat.top, left: bat.left, right: bat.right, animationDelay: bat.delay }}
+        >
+          🦇
+        </span>
+      ))}
+    </div>
+  );
 }
