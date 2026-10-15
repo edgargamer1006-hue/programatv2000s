@@ -1,44 +1,49 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
-import { Tv, Calendar, Eye } from "lucide-react";
+import { useCallback, useMemo, useState } from "react";
+import { Tv, Calendar, Eye, Coffee } from "lucide-react";
 import RetroTV from "@/components/RetroTV";
 import ChannelGuide from "@/components/ChannelGuide";
 import SeasonalEffects from "@/components/SeasonalEffects";
 import Countdown from "@/components/Countdown";
+import MexicoClock from "@/components/MexicoClock";
 import { getActiveTheme } from "@/data";
-import { getCurrentAndNext, getSeenPrograms, toggleSeen, formatClock, formatHour } from "@/lib/scheduler";
+import { mercadoPagoHref } from "@/data/pagos";
+import { getCurrentAndNext, getSeenPrograms, toggleSeen, seenKey } from "@/lib/scheduler";
+import { daypartLabel, formatMinute12, getMexicoDateTime } from "@/lib/mexico-time";
+import { useMexicoMinute } from "@/lib/hooks";
 import type { Program } from "@/types";
 
 const RATING_COLORS: Record<string, string> = {
-  "TV-Y": "#22c55e", "TV-Y7": "#3b82f6", "TV-G": "#22c55e",
-  "TV-PG": "#eab308", "TV-14": "#f97316", "TV-MA": "#ef4444", "PG": "#eab308", "G": "#22c55e",
+  "TV-Y": "#22c55e",
+  "TV-Y7": "#3b82f6",
+  "TV-G": "#22c55e",
+  "TV-PG": "#eab308",
+  "TV-14": "#f97316",
+  "TV-MA": "#ef4444",
+  PG: "#eab308",
+  G: "#22c55e",
 };
 
 export default function App() {
-  const [now, setNow] = useState(new Date());
+  const now = useMexicoMinute();
+  const minuteOfDay = getMexicoDateTime(now).minuteOfDay;
   const [mode, setMode] = useState<"live" | "guide">("live");
   const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
-  const [seenPrograms, setSeenPrograms] = useState<Set<string>>(new Set());
+  const [seenPrograms, setSeenPrograms] = useState<Set<string>>(() => getSeenPrograms());
 
-  useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    setSeenPrograms(getSeenPrograms());
-  }, []);
-
-  const { theme, seasonMode, isSpecialDay } = useMemo(() => getActiveTheme(now), [now]);
-
-  const liveResult = useMemo(() => getCurrentAndNext(theme, now), [theme, now]);
+  const { theme, seasonMode } = useMemo(() => getActiveTheme(now), [now]);
+  const liveResult = useMemo(
+    () => getCurrentAndNext(theme.programs, now),
+    [theme.programs, now],
+  );
 
   const activeProgram = mode === "guide" && selectedProgram ? selectedProgram : liveResult.current;
   const nextProgram = mode === "guide" ? null : liveResult.next;
-  const isSeen = activeProgram ? seenPrograms.has(activeProgram.id) : false;
+  const isSeen = activeProgram ? seenPrograms.has(seenKey(activeProgram)) : false;
+  const cafeHref = mercadoPagoHref();
 
   const handleToggleSeen = useCallback(() => {
     if (!activeProgram) return;
-    setSeenPrograms(toggleSeen(activeProgram.id));
+    setSeenPrograms(toggleSeen(seenKey(activeProgram)));
   }, [activeProgram]);
 
   const handleGuideToggleSeen = useCallback((id: string) => {
@@ -50,8 +55,8 @@ export default function App() {
     setMode("guide");
   }, []);
 
-  const clock = formatClock(now);
-  const isPreHalloween = seasonMode === "pre-halloween";
+  const schedule = theme.programs;
+  let lastDaypart = "";
 
   return (
     <div
@@ -60,114 +65,100 @@ export default function App() {
     >
       <SeasonalEffects effect={theme.effect} />
 
-      {/* Ambient glow — very dim */}
       <div
         className="fixed inset-0 pointer-events-none opacity-20"
         style={{ background: `radial-gradient(ellipse at top, ${theme.accent}06, transparent 60%)` }}
       />
 
       <div className="relative z-20 px-4 sm:px-6 lg:px-8 py-6 max-w-7xl mx-auto">
-        {/* ===== HEADER ===== */}
         <header className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3">
             <div
               className="w-11 h-11 rounded-xl flex items-center justify-center"
               style={{
                 background: `linear-gradient(135deg, ${theme.accent}20, ${theme.accent2}15)`,
-                border: `1px solid ${theme.accent}25`,
+                border: `1px solid ${theme.accent}40`,
               }}
             >
-              <Tv size={22} style={{ color: `${theme.accent}cc` }} />
+              <Tv size={22} style={{ color: theme.accent }} aria-hidden="true" />
             </div>
             <div>
-              <h1
-                className="text-xl sm:text-2xl font-black tracking-tight text-white/90"
-                style={{ fontFamily: theme.fontClass, textShadow: `0 0 12px ${theme.accent}30` }}
-              >
+              <h1 className={`text-xl sm:text-2xl font-black tracking-tight text-white ${theme.fontClass}`}>
                 {theme.channelName}
               </h1>
-              <p className="text-xs text-white/40 tracking-wider">{theme.subtitle}</p>
+              <p className="text-xs text-white/75 tracking-wider">{theme.subtitle}</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <div
+          <div className="flex items-center gap-3">
+            <CafeButton href={cafeHref} accent={theme.accent} />
+            <MexicoClock
               className="px-4 py-2 rounded-xl text-xl sm:text-2xl font-mono font-bold tabular-nums"
               style={{
                 background: "rgba(26,26,30,0.6)",
-                border: `1px solid ${theme.accent}20`,
-                color: `${theme.accent}cc`,
-                textShadow: `0 0 8px ${theme.accent}30`,
+                border: `1px solid ${theme.accent}55`,
+                color: theme.accent,
               }}
-            >
-              {clock}
-            </div>
+            />
           </div>
         </header>
 
-        {/* ===== Banner temático decorativo ===== */}
         <div
           className="mb-6 px-4 py-2.5 rounded-xl flex items-center justify-center overflow-hidden relative"
           style={{
-            background: `linear-gradient(90deg, ${theme.accent}10, ${theme.accent2}10, ${theme.accent}10)`,
-            border: `1px solid ${theme.accent}20`,
+            background: `linear-gradient(90deg, ${theme.accent}14, ${theme.accent2}14, ${theme.accent}14)`,
+            border: `1px solid ${theme.accent}40`,
           }}
         >
-          <p
-            className="text-xs sm:text-sm font-bold tracking-wider text-center"
-            style={{ color: `${theme.accent}dd`, fontFamily: theme.fontClass, textShadow: `0 0 6px ${theme.accent}30` }}
-          >
+          <p className={`text-xs sm:text-sm font-bold tracking-wider text-center ${theme.fontClass}`} style={{ color: theme.accent }}>
             {theme.decoration.headerBanner}
           </p>
         </div>
 
-        {/* ===== Pre-Halloween teaser card ===== */}
-        {isPreHalloween && (
+        {seasonMode === "pre-halloween" && (
           <div
             className="mb-6 rounded-2xl p-5 relative overflow-hidden"
             style={{
               background: "linear-gradient(135deg, rgba(255,102,0,0.08), rgba(20,20,26,0.6))",
-              border: "1px solid rgba(255,102,0,0.20)",
+              border: "1px solid rgba(255,102,0,0.35)",
             }}
           >
             <div className="flex flex-col sm:flex-row items-center gap-5">
               <div className="flex items-center gap-3 flex-shrink-0">
-                <span className="text-4xl">🎃</span>
+                <span className="text-4xl" aria-hidden="true">🎃</span>
                 <div>
-                  <h3 className="text-lg font-black text-orange-400/90" style={{ fontFamily: "font-creepy" }}>
-                    Especial de Halloween
-                  </h3>
-                  <p className="text-xs text-orange-300/50 mt-0.5">Estreno: 1° de Octubre · 24/7 de Terror</p>
+                  <h2 className="text-lg font-black text-orange-300 font-creepy">Especial de Halloween</h2>
+                  <p className="text-xs text-orange-100/80 mt-0.5">Estreno: 1 de octubre · 24/7 de terror</p>
                 </div>
               </div>
               <div className="flex-1 w-full">
-                <Countdown now={now} />
+                <Countdown />
               </div>
             </div>
           </div>
         )}
 
-        {/* ===== Contenido principal ===== */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6">
-          {/* Columna izquierda: TV + controles */}
           <div className="flex flex-col gap-5">
-            {/* Controles de modo */}
             <div className="flex flex-wrap items-center gap-3 justify-center">
               <button
+                type="button"
                 onClick={() => setMode("live")}
                 className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 active:scale-95"
                 style={{
-                  background: mode === "live" ? `${theme.accent}20` : "rgba(26,26,30,0.5)",
-                  border: `1px solid ${mode === "live" ? theme.accent + "40" : "rgba(255,255,255,0.06)"}`,
-                  color: mode === "live" ? `${theme.accent}dd` : "rgba(255,255,255,0.4)",
+                  background: mode === "live" ? `${theme.accent}24` : "rgba(26,26,30,0.5)",
+                  border: `1px solid ${mode === "live" ? theme.accent + "66" : "rgba(255,255,255,0.14)"}`,
+                  color: mode === "live" ? theme.accent : "rgba(255,255,255,0.82)",
                 }}
               >
-                <Tv size={16} />
-                En Vivo 24/7
+                <Tv size={16} aria-hidden="true" />
+                En vivo 24/7
               </button>
 
               <ChannelGuide
                 theme={theme}
+                now={now}
+                minuteOfDay={minuteOfDay}
                 seenPrograms={seenPrograms}
                 onToggleSeen={handleGuideToggleSeen}
                 onSelectProgram={handleSelectProgram}
@@ -175,29 +166,28 @@ export default function App() {
               />
             </div>
 
-            {/* Indicador de modo seleccionado manualmente */}
             {mode === "guide" && selectedProgram && (
-              <div className="flex items-center justify-center gap-3">
+              <div className="flex items-center justify-center gap-3 flex-wrap">
                 <div
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs"
-                  style={{ background: `${theme.accent2}12`, border: `1px solid ${theme.accent2}25`, color: `${theme.accent2}bb` }}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs text-white/90"
+                  style={{ background: `${theme.accent2}18`, border: `1px solid ${theme.accent2}44` }}
                 >
-                  <Calendar size={12} />
-                  Modo On Demand: {selectedProgram.titulo}
+                  <Calendar size={12} aria-hidden="true" />
+                  Modo bajo demanda: {selectedProgram.titulo}
                 </div>
                 <button
+                  type="button"
                   onClick={() => {
                     setMode("live");
                     setSelectedProgram(null);
                   }}
-                  className="text-xs text-white/40 hover:text-white/70 transition-colors underline"
+                  className="text-xs text-white/80 hover:text-white transition-colors underline"
                 >
-                  Volver a En Vivo
+                  Volver a en vivo
                 </button>
               </div>
             )}
 
-            {/* Televisor */}
             <RetroTV
               currentProgram={activeProgram}
               nextProgram={nextProgram}
@@ -208,127 +198,133 @@ export default function App() {
               isLive={mode === "live"}
               isSeen={isSeen}
               onToggleSeen={handleToggleSeen}
-              clock={clock}
               themeName={theme.name}
               decoration={theme.decoration}
               fontClass={theme.fontClass}
               seasonMode={seasonMode}
             />
 
-            {/* Sinopsis del programa actual */}
             {activeProgram && (
               <div
                 className="rounded-xl p-5"
-                style={{
-                  background: "rgba(26,26,30,0.5)",
-                  border: `1px solid ${theme.accent}12`,
-                }}
+                style={{ background: "rgba(26,26,30,0.5)", border: `1px solid ${theme.accent}28` }}
               >
-                <div className="flex items-center gap-2 mb-3">
-                  <span
-                    className="text-[10px] font-bold px-2 py-0.5 rounded"
-                    style={{ background: `${theme.accent2}18`, color: `${theme.accent2}cc` }}
-                  >
+                <div className="flex items-center gap-2 mb-3 flex-wrap">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded" style={{ background: `${theme.accent2}22`, color: "#fff" }}>
                     {activeProgram.categoria}
                   </span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-white/8 text-white/40">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-white/10 text-white/80">
                     {activeProgram.genre}
                   </span>
                   <span
                     className="text-[10px] font-bold px-2 py-0.5 rounded"
-                    style={{ background: `${RATING_COLORS[activeProgram.rating] ?? "#888"}20`, color: RATING_COLORS[activeProgram.rating] ?? "#888" }}
+                    style={{
+                      background: `${RATING_COLORS[activeProgram.rating] ?? "#888"}22`,
+                      color: RATING_COLORS[activeProgram.rating] ?? "#ddd",
+                    }}
                   >
                     {activeProgram.rating}
                   </span>
-                  {seenPrograms.has(activeProgram.id) && (
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-green-500/15 text-green-400/80 flex items-center gap-1">
-                      <Eye size={10} /> VISTO
+                  {isSeen && (
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-green-500/20 text-green-300 flex items-center gap-1">
+                      <Eye size={10} aria-hidden="true" /> Visto
                     </span>
                   )}
                 </div>
-                <h3 className="text-lg font-bold text-white/90 mb-1">{activeProgram.titulo}</h3>
-                <p className="text-sm text-white/50 leading-relaxed mb-3">{activeProgram.sinopsis}</p>
-                <p className="text-xs text-white/25">Duración: {activeProgram.duration} minutos</p>
+                <h2 className="text-lg font-bold text-white mb-1">{activeProgram.titulo}</h2>
+                <p className="text-sm text-white/80 leading-relaxed mb-3">{activeProgram.sinopsis}</p>
+                <p className="text-xs text-white/70">
+                  {formatMinute12(activeProgram.startMinute)} – {formatMinute12(activeProgram.startMinute + activeProgram.duration)}
+                  {" · "}
+                  {activeProgram.duration} min
+                </p>
               </div>
             )}
           </div>
 
-          {/* Columna derecha: Sidebar */}
           <aside className="flex flex-col gap-5">
-            {/* Cuenta regresiva (visible cuando NO es pre-halloween, que ya tiene su tarjeta) */}
-            {!isPreHalloween && (
-              <div
-                className="rounded-2xl p-5"
-                style={{
-                  background: "rgba(26,26,30,0.5)",
-                  border: `1px solid ${theme.accent}15`,
-                }}
-              >
-                <Countdown now={now} />
+            {seasonMode !== "pre-halloween" && (
+              <div className="rounded-2xl p-5" style={{ background: "rgba(26,26,30,0.5)", border: `1px solid ${theme.accent}28` }}>
+                <Countdown />
               </div>
             )}
 
-            {/* Programación actual */}
-            <div
-              className="rounded-2xl p-5"
-              style={{
-                background: "rgba(26,26,30,0.5)",
-                border: `1px solid ${theme.accent}15`,
-              }}
-            >
-              <h3 className="text-xs font-bold uppercase tracking-wider text-white/30 mb-3">
-                Programación de Hoy
-              </h3>
-              <div className="space-y-2 max-h-[400px] overflow-y-auto custom-scrollbar pr-1">
-                {theme.programs
-                  .filter((p) => p.dia === 0 || p.dia === now.getDate())
-                  .sort((a, b) => a.horaInicio - b.horaInicio)
-                  .map((program) => {
-                    const isActive = activeProgram?.id === program.id;
-                    const isSeenItem = seenPrograms.has(program.id);
-                    return (
+            <div className="rounded-2xl p-5" style={{ background: "rgba(26,26,30,0.5)", border: `1px solid ${theme.accent}28` }}>
+              <h2 className="text-xs font-bold uppercase tracking-wider text-white/75 mb-3">Programación de hoy</h2>
+              <div className="space-y-2 max-h-[28rem] overflow-y-auto custom-scrollbar pr-1">
+                {schedule.map((program) => {
+                  const daypart = daypartLabel(program.startMinute);
+                  const showDaypart = daypart !== lastDaypart;
+                  lastDaypart = daypart;
+                  const isActive = activeProgram?.id === program.id;
+                  const itemSeen = seenPrograms.has(seenKey(program));
+                  return (
+                    <div key={program.id}>
+                      {showDaypart && (
+                        <p className="text-[10px] font-bold uppercase tracking-wider text-white/60 pt-2 pb-1">{daypart}</p>
+                      )}
                       <button
-                        key={program.id}
+                        type="button"
                         onClick={() => handleSelectProgram(program)}
-                        className="w-full text-left rounded-lg p-2.5 transition-all hover:scale-[1.02]"
+                        className="w-full text-left rounded-lg p-2.5 transition-colors"
                         style={{
-                          background: isActive ? `${theme.accent}12` : "rgba(255,255,255,0.015)",
-                          border: `1px solid ${isActive ? theme.accent + "30" : "transparent"}`,
+                          background: isActive ? `${theme.accent}18` : "rgba(255,255,255,0.03)",
+                          border: `1px solid ${isActive ? theme.accent + "55" : "transparent"}`,
                         }}
                       >
                         <div className="flex items-center gap-2">
-                          <span
-                            className="text-[10px] font-mono tabular-nums flex-shrink-0"
-                            style={{ color: `${theme.accent}aa` }}
-                          >
-                            {formatHour(program.horaInicio).replace(":00", "")}
+                          <span className="text-[10px] font-mono tabular-nums flex-shrink-0 text-white/80">
+                            {formatMinute12(program.startMinute)}
                           </span>
                           <span
-                            className="text-xs font-semibold text-white/70 truncate flex-1"
-                            style={isSeenItem ? { textDecoration: "line-through", opacity: 0.4 } : {}}
+                            className="text-xs font-semibold text-white/90 truncate flex-1"
+                            style={itemSeen ? { textDecoration: "line-through", opacity: 0.55 } : undefined}
                           >
                             {program.titulo}
                           </span>
-                          {isSeenItem && <Eye size={12} className="text-green-400/60 flex-shrink-0" />}
+                          {itemSeen && <Eye size={12} className="text-green-300 flex-shrink-0" aria-hidden="true" />}
                         </div>
                       </button>
-                    );
-                  })}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </aside>
         </div>
 
-        {/* ===== FOOTER ===== */}
-        <footer className="mt-10 pt-6 border-t border-white/5 text-center">
-          <p className="text-xs text-white/25">
-            RetroToon TV — Simulación de canal retro 24/7 · Tema actual: {theme.name}
-          </p>
-          <p className="text-[10px] text-white/15 mt-1">
-            Los videos actuales son de prueba. Reemplaza las URLs en <code className="text-white/20">src/data.ts</code> para usar contenido real.
+        <footer className="mt-10 pt-6 border-t border-white/10 text-center">
+          <p className="text-xs text-white/70">
+            Retro Toon TV — Canal retro 24/7 · Horario de la Ciudad de México · {theme.name}
           </p>
         </footer>
       </div>
     </div>
+  );
+}
+
+function CafeButton({ href, accent }: { href: string | null; accent: string }) {
+  const className = "inline-flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-bold text-white";
+  const style = {
+    background: `${accent}24`,
+    border: `1px solid ${accent}66`,
+  };
+  const label = (
+    <>
+      <Coffee size={16} aria-hidden="true" />
+      Invítame un café
+    </>
+  );
+  if (!href) {
+    return (
+      <button type="button" className={className} style={style} aria-disabled="true">
+        {label}
+      </button>
+    );
+  }
+  return (
+    <a className={className} style={style} href={href} target="_blank" rel="noopener noreferrer">
+      {label}
+    </a>
   );
 }

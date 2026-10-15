@@ -159,14 +159,30 @@
   100% { width: 0; height: 2px; opacity: 0; }
 }
 
-/* Channel bug pulse */
 .channel-bug {
-  animation: channel-bug-pulse 4s ease-in-out infinite;
+  opacity: 1;
 }
 
-@keyframes channel-bug-pulse {
-  0%, 100% { opacity: 0.75; }
-  50% { opacity: 0.45; }
+.live-pulse {
+  animation: live-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.72; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scanlines,
+  .tv-static,
+  .frame-icon-float,
+  .channel-bug,
+  .papel-picado,
+  .crt-shutdown,
+  .live-pulse,
+  .season-drift {
+    animation: none !important;
+  }
 }
 
 /* ============================================================
@@ -215,9 +231,18 @@ input[type="range"] {
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: #f4f4f5;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: 0;
+  border-radius: 50%;
+  background: #f4f4f5;
   cursor: pointer;
 }

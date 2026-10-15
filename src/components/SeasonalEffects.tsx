@@ -1,60 +1,61 @@
 import { useMemo } from "react";
+import { usePrefersReducedMotion } from "../lib/hooks";
 
 interface SeasonalEffectsProps {
   effect: "snow" | "papel-picado" | "neon-flicker" | "cempasuchil" | "none" | "summer" | "pre-halloween";
 }
 
-/* ============================================================
- *  EFECTOS VISUALES ESTACIONALES
- *  ------------------------------------------------------------
- *  Nieve, papel picado, neón, cempasúchil, pre-halloween.
- *  Renderiza partículas animadas con CSS puro.
- *  Todos los efectos usan opacidad baja para ser eyestrain-friendly.
- * ============================================================ */
 export default function SeasonalEffects({ effect }: SeasonalEffectsProps) {
+  const reduceMotion = usePrefersReducedMotion();
   const particles = useMemo(() => {
+    if (reduceMotion) return [];
     if (effect === "snow") {
-      return Array.from({ length: 50 }, (_, i) => ({
+      return Array.from({ length: 40 }, (_, i) => ({
         id: i,
         left: Math.random() * 100,
         delay: Math.random() * 10,
-        duration: 5 + Math.random() * 10,
+        duration: 8 + Math.random() * 8,
         size: 2 + Math.random() * 3,
+        glyph: "",
       }));
     }
     if (effect === "cempasuchil") {
-      return Array.from({ length: 25 }, (_, i) => ({
+      return Array.from({ length: 18 }, (_, i) => ({
         id: i,
         left: Math.random() * 100,
         delay: Math.random() * 8,
-        duration: 6 + Math.random() * 8,
-        size: 6 + Math.random() * 6,
+        duration: 8 + Math.random() * 8,
+        size: 8 + Math.random() * 6,
+        glyph: "🌼",
       }));
     }
     if (effect === "pre-halloween") {
-      return Array.from({ length: 15 }, (_, i) => ({
+      return Array.from({ length: 12 }, (_, i) => ({
         id: i,
         left: Math.random() * 100,
         delay: Math.random() * 12,
-        duration: 8 + Math.random() * 10,
-        size: 4 + Math.random() * 6,
+        duration: 10 + Math.random() * 8,
+        size: 8 + Math.random() * 6,
+        glyph: i % 3 === 0 ? "🕸️" : i % 3 === 1 ? "🦇" : "🕷️",
       }));
     }
     return [];
-  }, [effect]);
+  }, [effect, reduceMotion]);
+
+  if (effect === "none" || reduceMotion) return null;
 
   if (effect === "snow") {
     return (
-      <div className="pointer-events-none fixed inset-0 z-10 overflow-hidden">
-        {particles.map((p) => (
+      <div className="pointer-events-none fixed inset-0 z-10 overflow-hidden" aria-hidden="true">
+        {particles.map((particle) => (
           <div
-            key={p.id}
-            className="absolute rounded-full bg-white opacity-50"
+            key={particle.id}
+            className="season-drift absolute rounded-full bg-white opacity-50"
             style={{
-              left: `${p.left}%`,
-              width: `${p.size}px`,
-              height: `${p.size}px`,
-              animation: `snowfall ${p.duration}s linear ${p.delay}s infinite`,
+              left: `${particle.left}%`,
+              width: `${particle.size}px`,
+              height: `${particle.size}px`,
+              animation: `snowfall ${particle.duration}s linear ${particle.delay}s infinite`,
             }}
           />
         ))}
@@ -64,21 +65,21 @@ export default function SeasonalEffects({ effect }: SeasonalEffectsProps) {
 
   if (effect === "cempasuchil") {
     return (
-      <div className="pointer-events-none fixed inset-0 z-10 overflow-hidden">
-        {particles.map((p) => (
+      <div className="pointer-events-none fixed inset-0 z-10 overflow-hidden" aria-hidden="true">
+        {particles.map((particle) => (
           <div
-            key={p.id}
-            className="absolute opacity-50"
+            key={particle.id}
+            className="season-drift absolute opacity-60"
             style={{
-              left: `${p.left}%`,
-              fontSize: `${p.size}px`,
-              animation: `snowfall ${p.duration}s linear ${p.delay}s infinite`,
+              left: `${particle.left}%`,
+              fontSize: `${particle.size}px`,
+              animation: `snowfall ${particle.duration}s linear ${particle.delay}s infinite`,
             }}
           >
-            🌼
+            {particle.glyph}
           </div>
         ))}
-        <div className="absolute top-0 left-0 right-0 flex justify-around items-center h-10 pointer-events-none">
+        <div className="absolute top-0 left-0 right-0 flex justify-around items-center h-10">
           {Array.from({ length: 18 }).map((_, i) => (
             <div
               key={i}
@@ -96,16 +97,15 @@ export default function SeasonalEffects({ effect }: SeasonalEffectsProps) {
 
   if (effect === "neon-flicker") {
     return (
-      <div className="pointer-events-none fixed inset-0 z-10 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-purple-900/5 via-transparent to-orange-900/5" />
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-orange-500/3 to-transparent" />
+      <div className="pointer-events-none fixed inset-0 z-10 overflow-hidden" aria-hidden="true">
+        <div className="absolute inset-0 bg-gradient-to-b from-purple-900/10 via-transparent to-orange-900/10" />
         <div
-          className="absolute top-1/4 left-1/3 w-80 h-80 rounded-full blur-3xl opacity-8"
-          style={{ background: "#ff6600", animation: "fog-drift 20s ease-in-out infinite" }}
+          className="season-drift absolute top-1/4 left-1/3 w-80 h-80 rounded-full blur-3xl"
+          style={{ background: "#ff6600", opacity: 0.08, animation: "fog-drift 20s ease-in-out infinite" }}
         />
         <div
-          className="absolute bottom-1/4 right-1/4 w-72 h-72 rounded-full blur-3xl opacity-8"
-          style={{ background: "#9b2d9b", animation: "fog-drift 25s ease-in-out infinite reverse" }}
+          className="season-drift absolute bottom-1/4 right-1/4 w-72 h-72 rounded-full blur-3xl"
+          style={{ background: "#9b2d9b", opacity: 0.08, animation: "fog-drift 25s ease-in-out infinite reverse" }}
         />
       </div>
     );
@@ -113,25 +113,19 @@ export default function SeasonalEffects({ effect }: SeasonalEffectsProps) {
 
   if (effect === "pre-halloween") {
     return (
-      <div className="pointer-events-none fixed inset-0 z-10 overflow-hidden">
-        {/* Subtle fog */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-orange-500/5 to-transparent" />
-        <div
-          className="absolute top-1/3 left-1/4 w-72 h-72 rounded-full blur-3xl opacity-8"
-          style={{ background: "#ff6600", animation: "fog-drift 25s ease-in-out infinite" }}
-        />
-        {/* Floating spooky particles — spider webs, tiny bats */}
-        {particles.map((p) => (
+      <div className="pointer-events-none fixed inset-0 z-10 overflow-hidden" aria-hidden="true">
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-orange-500/10 to-transparent" />
+        {particles.map((particle) => (
           <div
-            key={p.id}
-            className="absolute opacity-25"
+            key={particle.id}
+            className="season-drift absolute opacity-40"
             style={{
-              left: `${p.left}%`,
-              fontSize: `${p.size}px`,
-              animation: `snowfall ${p.duration}s linear ${p.delay}s infinite`,
+              left: `${particle.left}%`,
+              fontSize: `${particle.size}px`,
+              animation: `snowfall ${particle.duration}s linear ${particle.delay}s infinite`,
             }}
           >
-            {p.id % 3 === 0 ? "🕸️" : p.id % 3 === 1 ? "🦇" : "🕷️"}
+            {particle.glyph}
           </div>
         ))}
       </div>
@@ -140,8 +134,8 @@ export default function SeasonalEffects({ effect }: SeasonalEffectsProps) {
 
   if (effect === "summer") {
     return (
-      <div className="pointer-events-none fixed inset-0 z-10 overflow-hidden">
-        <div className="absolute top-10 right-10 text-5xl opacity-30" style={{ animation: "sway 4s ease-in-out infinite" }}>
+      <div className="pointer-events-none fixed inset-0 z-10 overflow-hidden" aria-hidden="true">
+        <div className="season-drift absolute top-10 right-10 text-5xl opacity-40" style={{ animation: "sway 4s ease-in-out infinite" }}>
           ☀️
         </div>
       </div>

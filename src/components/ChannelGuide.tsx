@@ -1,23 +1,19 @@
-import { useState, useRef, useEffect } from "react";
-import { Check, Play, Film, Tv, Sparkles, X, Clock, Star } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Check, Play, Film, Tv, Sparkles, X, Star } from "lucide-react";
 import type { Program, MonthTheme } from "../types";
-import { formatHour } from "../lib/scheduler";
+import { seenKey } from "../lib/scheduler";
+import { formatHourLabel, formatMexicoDate, formatMinute12 } from "../lib/mexico-time";
+import MexicoClock from "./MexicoClock";
 
 interface ChannelGuideProps {
   theme: MonthTheme;
+  now: Date;
+  minuteOfDay: number;
   seenPrograms: Set<string>;
   onToggleSeen: (id: string) => void;
   onSelectProgram: (program: Program) => void;
   currentProgramId: string | null;
 }
-
-/* ============================================================
- *  GUÍA DE CANALES — Estilo EPG (Electronic Program Guide)
- *  ------------------------------------------------------------
- *  Pantalla completa estilo guía de TV por cable de los 2000s
- *  (Sky/DIRECTV): cuadrícula de horarios, lista de programas,
- *  barra de tiempo arriba, panel de detalles abajo.
- * ============================================================ */
 
 const RATING_COLORS: Record<string, string> = {
   "TV-Y": "#22c55e",
@@ -26,12 +22,16 @@ const RATING_COLORS: Record<string, string> = {
   "TV-PG": "#eab308",
   "TV-14": "#f97316",
   "TV-MA": "#ef4444",
-  "PG": "#eab308",
-  "G": "#22c55e",
+  PG: "#eab308",
+  G: "#22c55e",
 };
+
+const PX_PER_HOUR = 120;
 
 export default function ChannelGuide({
   theme,
+  now,
+  minuteOfDay,
   seenPrograms,
   onToggleSeen,
   onSelectProgram,
@@ -39,233 +39,193 @@ export default function ChannelGuide({
 }: ChannelGuideProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const headerScrollRef = useRef<HTMLDivElement>(null);
+  const bodyScrollRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to current time when opening
-  useEffect(() => {
-    if (isOpen && scrollRef.current) {
-      const now = new Date();
-      const hour = now.getHours();
-      const scrollTarget = Math.max(0, (hour - 2) * 120);
-      scrollRef.current.scrollLeft = scrollTarget;
-    }
-  }, [isOpen]);
-
-  const programs = theme.programs
-    .filter((p) => p.dia === 0 || p.dia === new Date().getDate())
-    .sort((a, b) => a.horaInicio - b.horaInicio);
-
+  const programs = theme.programs;
   const hours = Array.from({ length: 24 }, (_, i) => i);
-  const currentHour = new Date().getHours();
-  const currentMinute = new Date().getMinutes();
+  const currentHour = Math.floor(minuteOfDay / 60);
+
+  useEffect(() => {
+    if (!isOpen || !bodyScrollRef.current) return;
+    const scrollTarget = Math.max(0, (currentHour - 2) * PX_PER_HOUR);
+    bodyScrollRef.current.scrollLeft = scrollTarget;
+    if (headerScrollRef.current) headerScrollRef.current.scrollLeft = scrollTarget;
+  }, [isOpen, currentHour]);
 
   const categoryIcon = (cat: string) => {
-    if (cat === "Película") return <Film size={12} />;
-    if (cat === "Especial") return <Sparkles size={12} />;
-    return <Tv size={12} />;
+    if (cat === "Película") return <Film size={12} aria-hidden="true" />;
+    if (cat === "Especial") return <Sparkles size={12} aria-hidden="true" />;
+    return <Tv size={12} aria-hidden="true" />;
   };
 
   const handleOpen = () => {
-    setSelectedProgram(programs.find((p) => p.id === currentProgramId) ?? programs[0] ?? null);
+    setSelectedProgram(programs.find((program) => program.id === currentProgramId) ?? programs[0] ?? null);
     setIsOpen(true);
   };
 
   return (
     <>
       <button
+        type="button"
         onClick={handleOpen}
-        className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 active:scale-95 hover:scale-105"
+        className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 active:scale-95"
         style={{
           background: `linear-gradient(135deg, ${theme.accent}30, ${theme.accent2}20)`,
-          border: `1px solid ${theme.accent}40`,
+          border: `1px solid ${theme.accent}66`,
           color: theme.accent,
         }}
       >
-        <Tv size={16} />
-        Guía de Canales
+        <Tv size={16} aria-hidden="true" />
+        Guía de canales
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex flex-col">
-          {/* === Header bar === */}
+        <div className="fixed inset-0 z-50 bg-black/92 backdrop-blur-md flex flex-col">
           <div
             className="flex items-center justify-between px-4 sm:px-6 py-3 border-b-2"
-            style={{
-              borderColor: theme.accent,
-              background: `linear-gradient(90deg, ${theme.accent}15, ${theme.accent2}10)`,
-            }}
+            style={{ borderColor: theme.accent, background: `linear-gradient(90deg, ${theme.accent}18, ${theme.accent2}12)` }}
           >
             <div className="flex items-center gap-3">
               <div
                 className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-sm"
-                style={{
-                  background: theme.accent,
-                  color: "#000",
-                  fontFamily: theme.fontClass,
-                }}
+                style={{ background: theme.accent, color: "#000" }}
               >
                 {theme.channelLogo}
               </div>
               <div>
-                <h2
-                  className="text-lg sm:text-xl font-black text-white"
-                  style={{ fontFamily: theme.fontClass, textShadow: `0 0 8px ${theme.accent}50` }}
-                >
-                  Guía de Programación
-                </h2>
-                <p className="text-xs text-white/50">{theme.channelName} — {theme.name}</p>
+                <h2 className={`text-lg sm:text-xl font-black text-white ${theme.fontClass}`}>Guía de programación</h2>
+                <p className="text-xs text-white/75">{theme.channelName} — {theme.name}</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <div
-                className="hidden sm:flex items-center gap-2 text-sm font-mono tabular-nums"
-                style={{ color: theme.accent }}
-              >
-                <Clock size={16} />
-                {new Date().toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" })}
-              </div>
+              <MexicoClock className="hidden sm:block text-sm font-mono tabular-nums" style={{ color: theme.accent }} />
               <button
+                type="button"
                 onClick={() => setIsOpen(false)}
                 className="w-9 h-9 rounded-lg flex items-center justify-center hover:bg-white/15 transition-colors"
-                style={{ border: `1px solid ${theme.accent}30` }}
+                style={{ border: `1px solid ${theme.accent}55` }}
+                aria-label="Cerrar guía"
               >
-                <X size={18} className="text-white/70" />
+                <X size={18} className="text-white" />
               </button>
             </div>
           </div>
 
-          {/* === Body: grid + details === */}
           <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
-            {/* === Left: Schedule Grid === */}
             <div className="flex-1 flex flex-col overflow-hidden">
-              {/* Time header */}
-              <div
-                className="flex border-b overflow-hidden flex-shrink-0"
-                style={{ borderColor: `${theme.accent}20`, background: "rgba(0,0,0,0.4)" }}
-              >
-                <div
-                  className="w-48 flex-shrink-0 px-3 py-2 text-xs font-bold uppercase tracking-wider border-r"
-                  style={{ borderColor: `${theme.accent}20`, color: theme.accent }}
-                >
+              <div className="flex border-b overflow-hidden flex-shrink-0" style={{ borderColor: `${theme.accent}33`, background: "rgba(0,0,0,0.4)" }}>
+                <div className="w-48 flex-shrink-0 px-3 py-2 text-xs font-bold uppercase tracking-wider border-r text-white" style={{ borderColor: `${theme.accent}33` }}>
                   Programa
                 </div>
-                <div ref={scrollRef} className="flex-1 overflow-x-auto custom-scrollbar">
-                  <div className="flex" style={{ width: "2880px" }}>
-                    {hours.map((h) => (
+                <div ref={headerScrollRef} className="flex-1 overflow-x-hidden">
+                  <div className="flex" style={{ width: `${24 * PX_PER_HOUR}px` }}>
+                    {hours.map((hour) => (
                       <div
-                        key={h}
-                        className="w-[120px] flex-shrink-0 px-2 py-2 text-xs font-mono text-center border-r"
+                        key={hour}
+                        className="flex-shrink-0 px-2 py-2 text-xs font-mono text-center border-r"
                         style={{
-                          borderColor: `${theme.accent}10`,
-                          color: h === currentHour ? theme.accent : "rgba(255,255,255,0.4)",
-                          background: h === currentHour ? `${theme.accent}10` : "transparent",
+                          width: PX_PER_HOUR,
+                          borderColor: `${theme.accent}22`,
+                          color: hour === currentHour ? theme.accent : "rgba(255,255,255,0.75)",
+                          background: hour === currentHour ? `${theme.accent}14` : "transparent",
                         }}
                       >
-                        {formatHour(h).replace(":00", "")}
+                        {formatHourLabel(hour).replace(":00", "")}
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
 
-              {/* Schedule rows */}
               <div className="flex-1 flex overflow-hidden">
-                {/* Program names column */}
-                <div className="w-48 flex-shrink-0 overflow-y-auto custom-scrollbar border-r" style={{ borderColor: `${theme.accent}20` }}>
-                  {programs.map((p) => {
-                    const isCurrent = currentProgramId === p.id;
-                    const isSelected = selectedProgram?.id === p.id;
-                    const isSeen = seenPrograms.has(p.id);
+                <div className="w-48 flex-shrink-0 overflow-y-auto custom-scrollbar border-r" style={{ borderColor: `${theme.accent}33` }}>
+                  {programs.map((program) => {
+                    const isCurrent = currentProgramId === program.id;
+                    const isSelected = selectedProgram?.id === program.id;
+                    const isSeen = seenPrograms.has(seenKey(program));
                     return (
                       <button
-                        key={p.id}
-                        onClick={() => setSelectedProgram(p)}
-                        className="w-full text-left px-3 py-3 border-b transition-all"
+                        key={program.id}
+                        type="button"
+                        onClick={() => setSelectedProgram(program)}
+                        className="w-full text-left px-3 h-[72px] border-b transition-colors overflow-hidden"
                         style={{
-                          borderColor: `${theme.accent}10`,
-                          background: isSelected ? `${theme.accent}15` : isCurrent ? `${theme.accent}08` : "transparent",
+                          borderColor: `${theme.accent}22`,
+                          background: isSelected ? `${theme.accent}20` : isCurrent ? `${theme.accent}10` : "transparent",
                           borderLeft: isSelected ? `3px solid ${theme.accent}` : "3px solid transparent",
                         }}
                       >
                         <div className="flex items-center gap-1.5 mb-1">
-                          <span style={{ color: theme.accent2 }}>{categoryIcon(p.categoria)}</span>
-                          <span className="text-[9px] font-mono px-1 rounded" style={{ background: `${RATING_COLORS[p.rating] ?? "#888"}20`, color: RATING_COLORS[p.rating] ?? "#888" }}>
-                            {p.rating}
+                          <span style={{ color: "#fff" }}>{categoryIcon(program.categoria)}</span>
+                          <span className="text-[9px] font-mono px-1 rounded" style={{ background: `${RATING_COLORS[program.rating] ?? "#888"}22`, color: RATING_COLORS[program.rating] ?? "#ddd" }}>
+                            {program.rating}
                           </span>
-                          {isSeen && <Check size={10} className="text-green-400" />}
+                          {isSeen && <Check size={10} className="text-green-300" aria-hidden="true" />}
                         </div>
-                        <p
-                          className="text-xs font-semibold text-white/80 truncate"
-                          style={isSeen ? { textDecoration: "line-through", opacity: 0.5 } : {}}
-                        >
-                          {p.titulo}
+                        <p className="text-xs font-semibold text-white truncate" style={isSeen ? { textDecoration: "line-through", opacity: 0.6 } : undefined}>
+                          {program.titulo}
                         </p>
-                        <p className="text-[10px] text-white/30 mt-0.5">{p.genre} · {p.duration}min</p>
+                        <p className="text-[10px] text-white/70 mt-0.5">{formatMinute12(program.startMinute)} · {program.duration} min</p>
                       </button>
                     );
                   })}
                 </div>
 
-                {/* Time grid */}
-                <div className="flex-1 overflow-auto custom-scrollbar relative">
-                  <div style={{ width: "2880px" }}>
-                    {/* Current time indicator */}
+                <div
+                  ref={bodyScrollRef}
+                  className="flex-1 overflow-auto custom-scrollbar"
+                  onScroll={(event) => {
+                    if (headerScrollRef.current) headerScrollRef.current.scrollLeft = event.currentTarget.scrollLeft;
+                  }}
+                >
+                  <div className="relative" style={{ width: `${24 * PX_PER_HOUR}px` }}>
                     <div
                       className="absolute top-0 bottom-0 z-10 pointer-events-none"
                       style={{
-                        left: `${currentHour * 120 + (currentMinute / 60) * 120}px`,
+                        left: `${(minuteOfDay / 60) * PX_PER_HOUR}px`,
                         width: "2px",
                         background: theme.accent,
-                        boxShadow: `0 0 8px ${theme.accent}`,
                       }}
-                    >
-                      <div
-                        className="absolute -top-0 -left-1 w-3 h-3 rounded-full"
-                        style={{ background: theme.accent, boxShadow: `0 0 6px ${theme.accent}` }}
-                      />
-                    </div>
-
-                    {programs.map((p) => {
-                      const isCurrent = currentProgramId === p.id;
-                      const isSelected = selectedProgram?.id === p.id;
-                      const widthPx = (p.duration / 60) * 120;
-                      const leftPx = p.horaInicio * 120;
+                    />
+                    {programs.map((program) => {
+                      const isCurrent = currentProgramId === program.id;
+                      const isSelected = selectedProgram?.id === program.id;
+                      const widthPx = (program.duration / 60) * PX_PER_HOUR;
+                      const leftPx = (program.startMinute / 60) * PX_PER_HOUR;
                       return (
-                        <div
-                          key={p.id}
-                          className="border-b h-[72px] flex items-center"
-                          style={{ borderColor: `${theme.accent}08` }}
-                        >
-                          {/* Hour cells background */}
-                          {hours.map((h) => (
-                            <div
-                              key={h}
-                              className="w-[120px] flex-shrink-0 h-full border-r"
-                              style={{
-                                borderColor: `${theme.accent}05`,
-                                background: h === currentHour ? `${theme.accent}05` : "transparent",
-                              }}
-                            />
-                          ))}
-                          {/* Program block overlay */}
-                          <div
-                            onClick={() => setSelectedProgram(p)}
-                            className="absolute h-[60px] rounded-md px-2 py-1 cursor-pointer transition-all hover:scale-105 overflow-hidden"
+                        <div key={program.id} className="relative border-b h-[72px]" style={{ borderColor: `${theme.accent}14` }}>
+                          <div className="absolute inset-0 flex">
+                            {hours.map((hour) => (
+                              <div
+                                key={hour}
+                                className="flex-shrink-0 h-full border-r"
+                                style={{
+                                  width: PX_PER_HOUR,
+                                  borderColor: `${theme.accent}10`,
+                                  background: hour === currentHour ? `${theme.accent}08` : "transparent",
+                                }}
+                              />
+                            ))}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setSelectedProgram(program)}
+                            className="absolute top-1.5 h-[60px] rounded-md px-2 py-1 text-left overflow-hidden"
                             style={{
                               left: `${leftPx}px`,
                               width: `${widthPx}px`,
-                              top: "auto",
                               background: isSelected
-                                ? `linear-gradient(135deg, ${theme.accent}30, ${theme.accent2}20)`
+                                ? `linear-gradient(135deg, ${theme.accent}44, ${theme.accent2}30)`
                                 : isCurrent
-                                  ? `linear-gradient(135deg, ${theme.accent}20, ${theme.accent2}10)`
-                                  : "rgba(255,255,255,0.04)",
-                              border: `1px solid ${isSelected ? theme.accent + "60" : isCurrent ? theme.accent + "30" : "rgba(255,255,255,0.08)"}`,
+                                  ? `linear-gradient(135deg, ${theme.accent}30, ${theme.accent2}18)`
+                                  : "rgba(255,255,255,0.06)",
+                              border: `1px solid ${isSelected ? theme.accent : "rgba(255,255,255,0.16)"}`,
                             }}
                           >
-                            <p className="text-[10px] font-bold text-white/90 truncate">{p.titulo}</p>
-                            <p className="text-[9px] text-white/40 truncate">{p.genre}</p>
-                          </div>
+                            <p className="text-[10px] font-bold text-white truncate">{program.titulo}</p>
+                            <p className="text-[9px] text-white/75 truncate">{program.genre}</p>
+                          </button>
                         </div>
                       );
                     })}
@@ -274,131 +234,76 @@ export default function ChannelGuide({
               </div>
             </div>
 
-            {/* === Right/Bottom: Details panel === */}
             <div
               className="lg:w-96 flex-shrink-0 border-t lg:border-t-0 lg:border-l overflow-y-auto custom-scrollbar"
-              style={{
-                borderColor: `${theme.accent}20`,
-                background: "rgba(0,0,0,0.5)",
-              }}
+              style={{ borderColor: `${theme.accent}33`, background: "rgba(0,0,0,0.5)" }}
             >
               {selectedProgram ? (
                 <div className="p-5">
-                  {/* Thumbnail */}
-                  <div
-                    className="relative rounded-lg overflow-hidden mb-4 aspect-video"
-                    style={{ border: `1px solid ${theme.accent}30` }}
-                  >
-                    <img
-                      src={selectedProgram.thumbnailUrl}
-                      alt={selectedProgram.titulo}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                    {/* Rating badge */}
-                    <div
-                      className="absolute top-2 right-2 px-2 py-0.5 rounded text-xs font-bold"
-                      style={{
-                        background: RATING_COLORS[selectedProgram.rating] ?? "#888",
-                        color: "#000",
-                      }}
-                    >
+                  <div className="relative rounded-lg overflow-hidden mb-4 aspect-video flex items-center justify-center" style={{ border: `1px solid ${theme.accent}55`, background: `linear-gradient(160deg, ${theme.accent}55, #140810 72%)` }}>
+                    <span className="text-5xl" aria-hidden="true">
+                      {selectedProgram.categoria === "Película" ? "🎬" : selectedProgram.categoria === "Especial" ? "✨" : "📺"}
+                    </span>
+                    <div className="absolute top-2 right-2 px-2 py-0.5 rounded text-xs font-bold" style={{ background: RATING_COLORS[selectedProgram.rating] ?? "#888", color: "#000" }}>
                       {selectedProgram.rating}
                     </div>
-                    {/* Category badge */}
-                    <div
-                      className="absolute bottom-2 left-2 flex items-center gap-1 px-2 py-0.5 rounded text-xs font-bold"
-                      style={{ background: "rgba(0,0,0,0.7)", color: theme.accent }}
-                    >
+                    <div className="absolute bottom-2 left-2 flex items-center gap-1 px-2 py-0.5 rounded text-xs font-bold bg-black/70 text-white">
                       {categoryIcon(selectedProgram.categoria)}
                       {selectedProgram.categoria}
                     </div>
                   </div>
 
-                  {/* Title & info */}
-                  <h3
-                    className="text-lg font-black text-white mb-2"
-                    style={{ fontFamily: theme.fontClass }}
-                  >
-                    {selectedProgram.titulo}
-                  </h3>
-
-                  {/* Meta row */}
+                  <h3 className={`text-lg font-black text-white mb-2 ${theme.fontClass}`}>{selectedProgram.titulo}</h3>
                   <div className="flex flex-wrap items-center gap-2 mb-3">
-                    <span
-                      className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-full"
-                      style={{ background: `${theme.accent}15`, color: theme.accent }}
-                    >
-                      <Clock size={11} /> {formatHour(selectedProgram.horaInicio)}
+                    <span className="text-xs px-2 py-0.5 rounded-full text-white" style={{ background: `${theme.accent}28` }}>
+                      {formatMinute12(selectedProgram.startMinute)}
                     </span>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-white/10 text-white/60">
-                      {selectedProgram.genre}
-                    </span>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-white/10 text-white/60">
-                      {selectedProgram.duration} min
-                    </span>
-                    {seenPrograms.has(selectedProgram.id) && (
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 flex items-center gap-1">
-                        <Check size={11} /> Visto
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-white/10 text-white/85">{selectedProgram.genre}</span>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-white/10 text-white/85">{selectedProgram.duration} min</span>
+                    {seenPrograms.has(seenKey(selectedProgram)) && (
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/20 text-green-300 flex items-center gap-1">
+                        <Check size={11} aria-hidden="true" /> Visto
                       </span>
                     )}
                   </div>
-
-                  {/* Synopsis */}
-                  <p className="text-sm text-white/60 leading-relaxed mb-4">
-                    {selectedProgram.sinopsis}
-                  </p>
-
-                  {/* Action buttons */}
+                  <p className="text-sm text-white/80 leading-relaxed mb-4">{selectedProgram.sinopsis}</p>
                   <div className="flex gap-2">
                     <button
+                      type="button"
                       onClick={() => {
                         onSelectProgram(selectedProgram);
                         setIsOpen(false);
                       }}
                       className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold transition-all active:scale-95"
-                      style={{
-                        background: `linear-gradient(135deg, ${theme.accent}, ${theme.accent2})`,
-                        color: "#000",
-                      }}
+                      style={{ background: `linear-gradient(135deg, ${theme.accent}, ${theme.accent2})`, color: "#000" }}
                     >
-                      <Play size={16} /> Ver Ahora
+                      <Play size={16} aria-hidden="true" /> Ver ahora
                     </button>
                     <button
-                      onClick={() => onToggleSeen(selectedProgram.id)}
+                      type="button"
+                      onClick={() => onToggleSeen(seenKey(selectedProgram))}
+                      aria-label={seenPrograms.has(seenKey(selectedProgram)) ? "Quitar de vistos" : "Marcar como visto"}
+                      aria-pressed={seenPrograms.has(seenKey(selectedProgram))}
                       className="px-4 py-3 rounded-xl text-sm font-bold transition-all active:scale-95"
                       style={{
-                        background: seenPrograms.has(selectedProgram.id)
-                          ? "rgba(34,197,94,0.15)"
-                          : "rgba(255,255,255,0.05)",
-                        border: `1px solid ${seenPrograms.has(selectedProgram.id) ? "rgba(34,197,94,0.4)" : "rgba(255,255,255,0.1)"}`,
-                        color: seenPrograms.has(selectedProgram.id) ? "#22c55e" : "rgba(255,255,255,0.5)",
+                        background: seenPrograms.has(seenKey(selectedProgram)) ? "rgba(34,197,94,0.18)" : "rgba(255,255,255,0.06)",
+                        border: `1px solid ${seenPrograms.has(seenKey(selectedProgram)) ? "rgba(34,197,94,0.55)" : "rgba(255,255,255,0.18)"}`,
+                        color: seenPrograms.has(seenKey(selectedProgram)) ? "#86efac" : "#fff",
                       }}
                     >
-                      {seenPrograms.has(selectedProgram.id) ? <Check size={16} /> : <Star size={16} />}
+                      {seenPrograms.has(seenKey(selectedProgram)) ? <Check size={16} /> : <Star size={16} />}
                     </button>
                   </div>
                 </div>
               ) : (
-                <div className="p-8 text-center text-white/30 text-sm">
-                  Selecciona un programa para ver los detalles.
-                </div>
+                <div className="p-8 text-center text-white/75 text-sm">Selecciona un programa para ver los detalles.</div>
               )}
             </div>
           </div>
 
-          {/* === Footer bar === */}
-          <div
-            className="flex items-center justify-between px-4 sm:px-6 py-2 border-t text-xs"
-            style={{ borderColor: `${theme.accent}15`, background: "rgba(0,0,0,0.4)" }}
-          >
-            <span className="text-white/30">
-              {programs.length} programas · {theme.channelName}
-            </span>
-            <span style={{ color: theme.accent }} className="font-mono">
-              {new Date().toLocaleDateString("es-MX", { weekday: "long", day: "numeric", month: "long" })}
-            </span>
+          <div className="flex items-center justify-between px-4 sm:px-6 py-2 border-t text-xs" style={{ borderColor: `${theme.accent}28`, background: "rgba(0,0,0,0.4)" }}>
+            <span className="text-white/70">{programs.length} programas · {theme.channelName}</span>
+            <span className="font-mono capitalize" style={{ color: theme.accent }}>{formatMexicoDate(now)}</span>
           </div>
         </div>
       )}
