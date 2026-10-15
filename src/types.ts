@@ -18,19 +18,84 @@ export type SeasonMode =
   | "navidad"
   | "regular";
 
-export interface Program {
+/** Identidad visual. Independiente del calendario: septiembre, verano y el resto tienen la suya. */
+export type SkinId = "harvest" | "halloween" | "ofrenda" | "navidad" | "nino" | "verano" | "sala";
+
+export interface ThemeSkin {
+  id: SkinId;
+  rootClass: string;
+  pageBg: string;
+  cabinetClass: string;
+  bezelClass: string;
+  feetClass: string;
+  panelClass: string;
+  cardClass: string;
+  crest: string;
+  flicker: boolean;
+  countdownLabel: string;
+  countdownIcon: string;
+  headingFont: string;
+  headingColor: string;
+  titleColor: string;
+  bannerColor: string;
+  daypartColor: string;
+  clockColor: string;
+  clockBg: string;
+  clockBorder: string;
+  unitColor: string;
+  unitBg: string;
+  unitBorder: string;
+  unitLabel: string;
+  colonColor: string;
+  subColor: string;
+  cardIdle: string;
+  cardActive: string;
+  cardBorder: string;
+  cardGlow: string;
+  guideBg: string;
+  guideIdle: string;
+  buttonBg: string;
+  buttonText: string;
+  brandColor: string;
+  mutedColor: string;
+  led: string;
+}
+
+export type Bloque = "mañana" | "tarde" | "noche";
+
+/** Pieza de catálogo, sin horario. El scheduler le asigna el minuto de inicio. */
+export interface CatalogItem {
   id: string;
-  dia: number;
-  horaInicio: number;
   titulo: string;
   categoria: Category;
   sinopsis: string;
-  embedUrl: string;
   genre: string;
   rating: Rating;
-  thumbnailUrl: string;
+  /** Duración en minutos. */
   duration: number;
-  skinTag?: SeasonMode;
+  bloque: Bloque;
+}
+
+/** Programa ya colocado en la barra del día (horario de la Ciudad de México). */
+export interface Program {
+  /** Único dentro del día: catalogId + minuto de inicio. */
+  id: string;
+  /** Id estable. Sirve para la URL de video y para "ya visto". */
+  catalogId: string;
+  titulo: string;
+  categoria: Category;
+  sinopsis: string;
+  genre: string;
+  rating: Rating;
+  duration: number;
+  bloque: Bloque;
+  /** Minuto del día (0–1439) en America/Mexico_City. */
+  startMinute: number;
+  /**
+   * URL directa al archivo de video (.mp4, .webm, .ogg).
+   * Cadena vacía: el televisor muestra la carta de "señal no disponible".
+   */
+  videoUrl: string;
 }
 
 export interface ThemeDecoration {
@@ -42,6 +107,8 @@ export interface ThemeDecoration {
 
 export interface MonthTheme {
   key: string;
+  /** Qué catálogo arma la programación de este tema. */
+  catalogKey: string;
   name: string;
   subtitle: string;
   accent: string;
@@ -54,4 +121,5 @@ export interface MonthTheme {
   programs: Program[];
   decoration: ThemeDecoration;
   seasonMode: SeasonMode;
+  skin: ThemeSkin;
 }

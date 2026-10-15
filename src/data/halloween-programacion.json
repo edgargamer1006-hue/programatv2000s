@@ -1,0 +1,720 @@
+{
+  "episodios": [
+    {
+      "serie": "iCarly",
+      "titulo_en": "iScream on Halloween",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T1E7",
+      "anio": 2007,
+      "duracion_min": 24,
+      "bloque": "tarde",
+      "descripcion": "Carly, Sam y Freddie transmiten un webshow en vivo desde un departamento supuestamente embrujado de su edificio."
+    },
+    {
+      "serie": "Los Hechiceros de Waverly Place",
+      "titulo_en": "Halloween",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T3E2",
+      "anio": 2009,
+      "duracion_min": 22,
+      "bloque": "tarde",
+      "descripcion": "Alex y Justin compiten por armar la casa embrujada más aterradora de Halloween, con magia de por medio."
+    },
+    {
+      "serie": "Los Hechiceros de Waverly Place",
+      "titulo_en": "Wizards vs. Werewolves",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T3E9",
+      "anio": 2010,
+      "duracion_min": 22,
+      "bloque": "tarde",
+      "descripcion": "Alex descubre que su nuevo novio Mason es un hombre lobo."
+    },
+    {
+      "serie": "¡Buena Suerte, Charlie!",
+      "titulo_en": "Scary Had a Little Lamb",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T2E25",
+      "anio": 2011,
+      "duracion_min": 22,
+      "bloque": "tarde",
+      "descripcion": "Un bravucón asusta a Charlie en Halloween y Teddy, con ayuda de Ivy, le da una cucharada de su propio chocolate."
+    },
+    {
+      "serie": "¡Buena Suerte, Charlie!",
+      "titulo_en": "Le Halloween",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T3E15",
+      "anio": 2012,
+      "duracion_min": 22,
+      "bloque": "tarde",
+      "descripcion": "La familia Duncan se enfrenta en una guerra de bromas por ver quién asusta más en Halloween."
+    },
+    {
+      "serie": "Zack y Cody: Gemelos en Acción",
+      "titulo_en": "The Ghost of Suite 613",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T1E19",
+      "anio": 2005,
+      "duracion_min": 22,
+      "bloque": "tarde",
+      "descripcion": "Los gemelos investigan la habitación 613 del Tipton, que según la leyenda está embrujada."
+    },
+    {
+      "serie": "Austin y Ally",
+      "titulo_en": "Costumes & Courage",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T2E1",
+      "anio": 2012,
+      "duracion_min": 22,
+      "bloque": "tarde",
+      "descripcion": "Episodio de Halloween: el grupo vive una noche de disfraces en la que Ally debe vencer sus miedos."
+    },
+    {
+      "serie": "Yo Amo a Lizzie",
+      "titulo_en": "Night of the Day of the Dead",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T1E24",
+      "anio": 2001,
+      "duracion_min": 22,
+      "bloque": "tarde",
+      "descripcion": "Lizzie y sus amigos celebran el Día de Muertos y aprenden sobre la tradición mexicana (ideal 1-2 nov)."
+    },
+    {
+      "serie": "Girl Meets World",
+      "titulo_en": "Girl Meets World of Terror",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T1E11",
+      "anio": 2014,
+      "duracion_min": 22,
+      "bloque": "tarde",
+      "descripcion": "Primer especial de Halloween de la serie: Riley y sus amigos viven una noche de sustos y disfraces."
+    },
+    {
+      "serie": "Malcolm",
+      "titulo_en": "Halloween Approximately",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T2E2",
+      "anio": 2000,
+      "duracion_min": 22,
+      "bloque": "noche",
+      "descripcion": "La familia celebra Halloween a su manera caótica mientras Reese y Malcolm planean la venganza perfecta."
+    },
+    {
+      "serie": "Community",
+      "titulo_en": "Epidemiology",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T2E6",
+      "anio": 2010,
+      "duracion_min": 22,
+      "bloque": "noche",
+      "descripcion": "Una fiesta de Halloween en Greendale se convierte en un apocalipsis zombi por comida militar contaminada."
+    },
+    {
+      "serie": "Community",
+      "titulo_en": "Horror Fiction in Seven Spooky Steps",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T3E5",
+      "anio": 2011,
+      "duracion_min": 22,
+      "bloque": "noche",
+      "descripcion": "El grupo cuenta historias de terror para descubrir quién de ellos es un psicópata."
+    },
+    {
+      "serie": "Modern Family",
+      "titulo_en": "Halloween",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T1",
+      "anio": 2009,
+      "duracion_min": 22,
+      "bloque": "noche",
+      "descripcion": "Claire se obsesiona con tener la casa de Halloween más aterradora del vecindario."
+    },
+    {
+      "serie": "The Big Bang Theory",
+      "titulo_en": "The Middle-Earth Paradigm",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T1E6",
+      "anio": 2007,
+      "duracion_min": 22,
+      "bloque": "noche",
+      "descripcion": "Penny invita a los chicos a su fiesta de disfraces de Halloween, con resultados incómodos."
+    },
+    {
+      "serie": "Brooklyn Nine-Nine",
+      "titulo_en": "Halloween",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T1E6",
+      "anio": 2013,
+      "duracion_min": 22,
+      "bloque": "noche",
+      "descripcion": "Jake apuesta con el capitán Holt que robará su reloj antes de medianoche: nace el Atraco de Halloween."
+    },
+    {
+      "serie": "Brooklyn Nine-Nine",
+      "titulo_en": "Halloween II",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T2E4",
+      "anio": 2014,
+      "duracion_min": 22,
+      "bloque": "noche",
+      "descripcion": "Holt busca la revancha en el segundo Atraco de Halloween."
+    },
+    {
+      "serie": "Brooklyn Nine-Nine",
+      "titulo_en": "Halloween III",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T3E5",
+      "anio": 2015,
+      "duracion_min": 22,
+      "bloque": "noche",
+      "descripcion": "Todo el precinto compite por el título de 'Increíble detective/genio' en el tercer atraco."
+    },
+    {
+      "serie": "Gravity Falls",
+      "titulo_en": "Summerween",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T1E12",
+      "anio": 2012,
+      "duracion_min": 22,
+      "bloque": "tarde",
+      "descripcion": "Dipper y Mabel deben juntar 500 dulces antes de que el Embaucador de Summerween los devore."
+    },
+    {
+      "serie": "El Increíble Mundo de Gumball",
+      "titulo_en": "The Halloween",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T2E9",
+      "anio": 2012,
+      "duracion_min": 11,
+      "bloque": "tarde",
+      "descripcion": "En Halloween, Carrie (la fantasma) se mete en problemas y Gumball y Darwin acaban en el más allá para rescatarla."
+    },
+    {
+      "serie": "Un Show Más",
+      "titulo_en": "Terror Tales of the Park",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T3E4",
+      "anio": 2011,
+      "duracion_min": 11,
+      "bloque": "tarde",
+      "descripcion": "Mordecai, Rigby y compañía cuentan tres historias de terror en el parque."
+    },
+    {
+      "serie": "Un Show Más",
+      "titulo_en": "Terror Tales of the Park II",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T4E2",
+      "anio": 2012,
+      "duracion_min": 11,
+      "bloque": "tarde",
+      "descripcion": "Una nueva antología de cuentos de miedo en la noche de Halloween del parque."
+    },
+    {
+      "serie": "Phineas y Ferb",
+      "titulo_en": "Night of the Living Pharmacists",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T4E29-30",
+      "anio": 2014,
+      "duracion_min": 22,
+      "bloque": "tarde",
+      "descripcion": "Un rayo de Doofenshmirtz convierte a Danville en una ciudad llena de 'zombis' Doofenshmirtz."
+    },
+    {
+      "serie": "Danny Phantom",
+      "titulo_en": "Fright Night",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T1E13",
+      "anio": 2004,
+      "duracion_min": 22,
+      "bloque": "tarde",
+      "descripcion": "Danny y Dash compiten en un concurso de casas embrujadas y el Caballero del Miedo convierte Halloween en una pesadilla real."
+    },
+    {
+      "serie": "Los Padrinos Mágicos",
+      "titulo_en": "Scary Godparents",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T2E13",
+      "anio": 2002,
+      "duracion_min": 11,
+      "bloque": "mañana",
+      "descripcion": "Timmy desea ser el niño más aterrador de Halloween y todo se sale de control."
+    },
+    {
+      "serie": "Bob Esponja",
+      "titulo_en": "Scaredy Pants",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T1E13",
+      "anio": 1999,
+      "duracion_min": 11,
+      "bloque": "mañana",
+      "descripcion": "Bob Esponja se disfraza del Holandés Volador para por fin asustar a alguien en Halloween."
+    },
+    {
+      "serie": "Bob Esponja",
+      "titulo_en": "Graveyard Shift",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T2E16",
+      "anio": 2002,
+      "duracion_min": 11,
+      "bloque": "mañana",
+      "descripcion": "En el turno nocturno del Crustáceo Crujiente, Calamardo inventa la leyenda del Hash-Slinging Slasher."
+    },
+    {
+      "serie": "Escandalosos",
+      "titulo_en": "Charlie's Halloween Thing",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T3E29",
+      "anio": 2017,
+      "duracion_min": 11,
+      "bloque": "tarde",
+      "descripcion": "Charlie (Pie Grande) organiza una casa embrujada para Halloween con ayuda de los osos."
+    },
+    {
+      "serie": "Escandalosos",
+      "titulo_en": "Charlie's Halloween Thing 2",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T4E18-19",
+      "anio": 2018,
+      "duracion_min": 22,
+      "bloque": "tarde",
+      "descripcion": "Charlie vuelve con nuevas historias de terror para sus amigos osos."
+    },
+    {
+      "serie": "Los Simpson",
+      "titulo_en": "Treehouse of Horror XIV",
+      "titulo_es_latam": "La Casita del Horror XIV",
+      "temporada_episodio": "T15",
+      "anio": 2003,
+      "duracion_min": 22,
+      "bloque": "noche",
+      "descripcion": "Tres relatos de terror: Homero como la Muerte, el reloj que detiene el tiempo y el Dr. Hibbert Moreau."
+    },
+    {
+      "serie": "Los Simpson",
+      "titulo_en": "Treehouse of Horror XVII",
+      "titulo_es_latam": "La Casita del Horror XVII",
+      "temporada_episodio": "T18",
+      "anio": 2006,
+      "duracion_min": 22,
+      "bloque": "noche",
+      "descripcion": "Homero devora una masa gelatinosa, un golem de Bart y una parodia de 'La Guerra de los Mundos'."
+    },
+    {
+      "serie": "Los Simpson",
+      "titulo_en": "Treehouse of Horror XX",
+      "titulo_es_latam": "La Casita del Horror XX",
+      "temporada_episodio": "T21",
+      "anio": 2009,
+      "duracion_min": 22,
+      "bloque": "noche",
+      "descripcion": "Parodias de Hitchcock, un apocalipsis zombi en Springfield y un musical de Sweeney Todd."
+    },
+    {
+      "serie": "Kim Possible",
+      "titulo_en": "October 31st",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T1E14",
+      "anio": 2002,
+      "duracion_min": 22,
+      "bloque": "tarde",
+      "descripcion": "En Halloween, Kim queda atrapada en un brazalete de tecnología robada mientras Ron enfrenta sus miedos."
+    },
+    {
+      "serie": "Zoey 101",
+      "titulo_en": "Haunted House",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T2E4 (cód. prod. 206)",
+      "anio": 2005,
+      "duracion_min": 22,
+      "bloque": "tarde",
+      "descripcion": "Logan organiza la casa embrujada anual de PCA y los chicos empiezan a desaparecer uno por uno."
+    },
+    {
+      "serie": "Victorious",
+      "titulo_en": "Terror on Cupcake Street",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T2E11",
+      "anio": 2011,
+      "duracion_min": 22,
+      "bloque": "tarde",
+      "descripcion": "Especial de Halloween de Hollywood Arts: Tori y sus amigos viven una noche de sustos en una calle 'embrujada'."
+    },
+    {
+      "serie": "iCarly",
+      "titulo_en": "iHalfoween",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T6E4",
+      "anio": 2012,
+      "duracion_min": 22,
+      "bloque": "tarde",
+      "descripcion": "El grupo prepara disfraces para una fiesta de Halloween a mitad de año con resultados desastrosos."
+    },
+    {
+      "serie": "Big Time Rush",
+      "titulo_en": "Big Time Halloween",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T2E5",
+      "anio": 2010,
+      "duracion_min": 22,
+      "bloque": "tarde",
+      "descripcion": "Los chicos de la banda viven un Halloween lleno de sustos en el Palm Woods."
+    },
+    {
+      "serie": "Jessie",
+      "titulo_en": "The Whining",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T2E1",
+      "anio": 2012,
+      "duracion_min": 22,
+      "bloque": "tarde",
+      "descripcion": "Halloween en el edificio de los Ross: la familia queda atrapada en una noche de terror."
+    },
+    {
+      "serie": "Hannah Montana",
+      "titulo_en": "Torn Between Two Hannahs",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T1E17",
+      "anio": 2006,
+      "duracion_min": 22,
+      "bloque": "tarde",
+      "descripcion": "En plena temporada de Halloween, Miley necesita a una doble de Hannah para estar en dos lugares a la vez."
+    },
+    {
+      "serie": "Es Tan Raven",
+      "titulo_en": "Don't Have a Cow",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T2E2",
+      "anio": 2003,
+      "duracion_min": 22,
+      "bloque": "tarde",
+      "descripcion": "Episodio de Halloween: Raven y sus amigos se meten en problemas en una noche de disfraces."
+    },
+    {
+      "serie": "Clarence",
+      "titulo_en": "Spooky Boo!",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T1E51",
+      "anio": 2015,
+      "duracion_min": 11,
+      "bloque": "tarde",
+      "descripcion": "Final de la primera temporada: Clarence y sus amigos viven una noche de Halloween llena de sustos en Aberdale."
+    },
+    {
+      "serie": "Kick Buttowski",
+      "titulo_en": "Kick or Treat",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T2E13",
+      "anio": 2011,
+      "duracion_min": 11,
+      "bloque": "tarde",
+      "descripcion": "Kick intenta conseguir la mayor cantidad de dulces en la noche de Halloween."
+    },
+    {
+      "serie": "Star vs. las Fuerzas del Mal",
+      "titulo_en": "Hungry Larry",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T2E11",
+      "anio": 2016,
+      "duracion_min": 11,
+      "bloque": "tarde",
+      "descripcion": "Star organiza una pijamada de Halloween donde cuentan la leyenda de 'Larry el Hambriento'."
+    },
+    {
+      "serie": "Gravity Falls",
+      "titulo_en": "Little Gift Shop of Horrors",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "T2E6",
+      "anio": 2014,
+      "duracion_min": 22,
+      "bloque": "noche",
+      "descripcion": "Antología de terror: el tío Stan cuenta tres historias de miedo para ahuyentar a un cliente."
+    },
+    {
+      "serie": "Más Allá del Jardín (Over the Garden Wall)",
+      "titulo_en": "The Old Grist Mill",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "Miniserie E1",
+      "anio": 2014,
+      "duracion_min": 11,
+      "bloque": "tarde",
+      "descripcion": "Capítulo 1 de 10: los hermanos Wirt y Greg siguen perdidos en el bosque otoñal de 'Lo Desconocido'."
+    },
+    {
+      "serie": "Más Allá del Jardín (Over the Garden Wall)",
+      "titulo_en": "Hard Times at the Huskin' Bee",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "Miniserie E2",
+      "anio": 2014,
+      "duracion_min": 11,
+      "bloque": "tarde",
+      "descripcion": "Capítulo 2 de 10: los hermanos Wirt y Greg siguen perdidos en el bosque otoñal de 'Lo Desconocido'."
+    },
+    {
+      "serie": "Más Allá del Jardín (Over the Garden Wall)",
+      "titulo_en": "Schooltown Follies",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "Miniserie E3",
+      "anio": 2014,
+      "duracion_min": 11,
+      "bloque": "tarde",
+      "descripcion": "Capítulo 3 de 10: los hermanos Wirt y Greg siguen perdidos en el bosque otoñal de 'Lo Desconocido'."
+    },
+    {
+      "serie": "Más Allá del Jardín (Over the Garden Wall)",
+      "titulo_en": "Songs of the Dark Lantern",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "Miniserie E4",
+      "anio": 2014,
+      "duracion_min": 11,
+      "bloque": "tarde",
+      "descripcion": "Capítulo 4 de 10: los hermanos Wirt y Greg siguen perdidos en el bosque otoñal de 'Lo Desconocido'."
+    },
+    {
+      "serie": "Más Allá del Jardín (Over the Garden Wall)",
+      "titulo_en": "Mad Love",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "Miniserie E5",
+      "anio": 2014,
+      "duracion_min": 11,
+      "bloque": "tarde",
+      "descripcion": "Capítulo 5 de 10: los hermanos Wirt y Greg siguen perdidos en el bosque otoñal de 'Lo Desconocido'."
+    },
+    {
+      "serie": "Más Allá del Jardín (Over the Garden Wall)",
+      "titulo_en": "Lullaby in Frogland",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "Miniserie E6",
+      "anio": 2014,
+      "duracion_min": 11,
+      "bloque": "tarde",
+      "descripcion": "Capítulo 6 de 10: los hermanos Wirt y Greg siguen perdidos en el bosque otoñal de 'Lo Desconocido'."
+    },
+    {
+      "serie": "Más Allá del Jardín (Over the Garden Wall)",
+      "titulo_en": "The Ringing of the Bell",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "Miniserie E7",
+      "anio": 2014,
+      "duracion_min": 11,
+      "bloque": "noche",
+      "descripcion": "Capítulo 7 de 10: los hermanos Wirt y Greg siguen perdidos en el bosque otoñal de 'Lo Desconocido'."
+    },
+    {
+      "serie": "Más Allá del Jardín (Over the Garden Wall)",
+      "titulo_en": "Babes in the Wood",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "Miniserie E8",
+      "anio": 2014,
+      "duracion_min": 11,
+      "bloque": "noche",
+      "descripcion": "Capítulo 8 de 10: los hermanos Wirt y Greg siguen perdidos en el bosque otoñal de 'Lo Desconocido'."
+    },
+    {
+      "serie": "Más Allá del Jardín (Over the Garden Wall)",
+      "titulo_en": "Into the Unknown",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "Miniserie E9",
+      "anio": 2014,
+      "duracion_min": 11,
+      "bloque": "noche",
+      "descripcion": "Capítulo 9 de 10: los hermanos Wirt y Greg siguen perdidos en el bosque otoñal de 'Lo Desconocido'."
+    },
+    {
+      "serie": "Más Allá del Jardín (Over the Garden Wall)",
+      "titulo_en": "The Unknown",
+      "titulo_es_latam": "desconocido",
+      "temporada_episodio": "Miniserie E10",
+      "anio": 2014,
+      "duracion_min": 11,
+      "bloque": "noche",
+      "descripcion": "Capítulo 10 de 10: los hermanos Wirt y Greg siguen perdidos en el bosque otoñal de 'Lo Desconocido'."
+    }
+  ],
+  "peliculas": [
+    {
+      "titulo_en": "Halloweentown",
+      "titulo_es_latam": "Halloweentown",
+      "anio": 1998,
+      "duracion_min": 84,
+      "bloque": "tarde",
+      "descripcion": "Marnie descubre que es bruja y viaja a un pueblo donde Halloween dura todo el año."
+    },
+    {
+      "titulo_en": "Halloweentown II: Kalabar's Revenge",
+      "titulo_es_latam": "Halloweentown II: La venganza de Kalabar",
+      "anio": 2001,
+      "duracion_min": 81,
+      "bloque": "tarde",
+      "descripcion": "El hijo de Kalabar planea convertir Halloweentown en un mundo gris y sin magia."
+    },
+    {
+      "titulo_en": "Hocus Pocus",
+      "titulo_es_latam": "Abracadabra",
+      "anio": 1993,
+      "duracion_min": 96,
+      "bloque": "tarde",
+      "descripcion": "Tres brujas del siglo XVII regresan a Salem en noche de Halloween (ideal 31 oct)."
+    },
+    {
+      "titulo_en": "Coraline",
+      "titulo_es_latam": "Coraline y la puerta secreta",
+      "anio": 2009,
+      "duracion_min": 100,
+      "bloque": "tarde",
+      "descripcion": "Una niña encuentra un mundo alterno 'perfecto' con una Otra Madre de ojos de botón."
+    },
+    {
+      "titulo_en": "Corpse Bride",
+      "titulo_es_latam": "El cadáver de la novia",
+      "anio": 2005,
+      "duracion_min": 77,
+      "bloque": "tarde",
+      "descripcion": "Un novio nervioso se casa por accidente con una novia muerta y viaja al mundo de los muertos."
+    },
+    {
+      "titulo_en": "ParaNorman",
+      "titulo_es_latam": "ParaNorman",
+      "anio": 2012,
+      "duracion_min": 92,
+      "bloque": "tarde",
+      "descripcion": "Un niño que habla con fantasmas debe salvar su pueblo de una maldición de brujas y zombis."
+    },
+    {
+      "titulo_en": "Monster House",
+      "titulo_es_latam": "Monster House: La casa de los sustos",
+      "anio": 2006,
+      "duracion_min": 91,
+      "bloque": "tarde",
+      "descripcion": "Tres chicos descubren que la casa del vecino es un monstruo vivo."
+    },
+    {
+      "titulo_en": "Scooby-Doo",
+      "titulo_es_latam": "Scooby-Doo",
+      "anio": 2002,
+      "duracion_min": 88,
+      "bloque": "tarde",
+      "descripcion": "Mystery Inc. se reúne para resolver misterios sobrenaturales en la isla Spooky."
+    },
+    {
+      "titulo_en": "Goosebumps",
+      "titulo_es_latam": "Escalofríos",
+      "anio": 2015,
+      "duracion_min": 103,
+      "bloque": "noche",
+      "descripcion": "Los monstruos de R. L. Stine escapan de sus libros y aterrorizan un pueblo."
+    },
+    {
+      "titulo_en": "Frankenweenie",
+      "titulo_es_latam": "Frankenweenie",
+      "anio": 2012,
+      "duracion_min": 87,
+      "bloque": "tarde",
+      "descripcion": "Victor revive a su perro Sparky con un experimento que desata el caos en su pueblo."
+    },
+    {
+      "titulo_en": "Hotel Transylvania",
+      "titulo_es_latam": "Hotel Transylvania",
+      "anio": 2012,
+      "duracion_min": 91,
+      "bloque": "mañana",
+      "descripcion": "Drácula cuida su hotel de monstruos hasta que llega un humano y se enamora de su hija."
+    },
+    {
+      "titulo_en": "Beetlejuice",
+      "titulo_es_latam": "Beetlejuice: El súper fantasma",
+      "anio": 1988,
+      "duracion_min": 92,
+      "bloque": "noche",
+      "descripcion": "Un matrimonio de fantasmas contrata a un bioexorcista caótico para echar a los nuevos dueños de su casa."
+    },
+    {
+      "titulo_en": "Trick 'r Treat",
+      "titulo_es_latam": "Dulce o truco / Truco o trato (no verificado)",
+      "anio": 2007,
+      "duracion_min": 82,
+      "bloque": "noche",
+      "descripcion": "Cuatro historias entrelazadas en una noche de Halloween donde romper las tradiciones se paga caro."
+    },
+    {
+      "titulo_en": "The Witches",
+      "titulo_es_latam": "La maldición de las brujas (no verificado)",
+      "anio": 1990,
+      "duracion_min": 91,
+      "bloque": "tarde",
+      "descripcion": "Un niño y su abuela descubren una convención de brujas que planea convertir a todos los niños en ratones."
+    },
+    {
+      "titulo_en": "The Witches",
+      "titulo_es_latam": "Las brujas",
+      "anio": 2020,
+      "duracion_min": 106,
+      "bloque": "tarde",
+      "descripcion": "Remake de Robert Zemeckis con Anne Hathaway como la Gran Bruja; mismo cuento de Roald Dahl en los años 60."
+    },
+    {
+      "titulo_en": "It",
+      "titulo_es_latam": "It (Eso)",
+      "anio": 2017,
+      "duracion_min": 135,
+      "bloque": "noche",
+      "descripcion": "Los niños del Club de los Perdedores enfrentan a Pennywise en Derry."
+    },
+    {
+      "titulo_en": "Scream",
+      "titulo_es_latam": "Scream: Grita antes de morir",
+      "anio": 1996,
+      "duracion_min": 111,
+      "bloque": "noche",
+      "descripcion": "Un asesino enmascarado acecha a estudiantes que conocen todas las reglas del cine de terror."
+    },
+    {
+      "titulo_en": "Child's Play",
+      "titulo_es_latam": "Chucky: El muñeco diabólico",
+      "anio": 1988,
+      "duracion_min": 87,
+      "bloque": "noche",
+      "descripcion": "El alma de un asesino queda atrapada en un muñeco que acaba en manos de un niño."
+    },
+    {
+      "titulo_en": "The Conjuring",
+      "titulo_es_latam": "El conjuro",
+      "anio": 2013,
+      "duracion_min": 112,
+      "bloque": "noche",
+      "descripcion": "Ed y Lorraine Warren ayudan a una familia acosada por una presencia demoníaca."
+    },
+    {
+      "titulo_en": "Insidious",
+      "titulo_es_latam": "La noche del demonio",
+      "anio": 2010,
+      "duracion_min": 103,
+      "bloque": "noche",
+      "descripcion": "Un niño cae en coma y su cuerpo se vuelve un imán para entidades del más allá."
+    },
+    {
+      "titulo_en": "Halloween",
+      "titulo_es_latam": "Halloween",
+      "anio": 2018,
+      "duracion_min": 106,
+      "bloque": "noche",
+      "descripcion": "Laurie Strode se prepara para enfrentar por última vez a Michael Myers, 40 años después."
+    },
+    {
+      "titulo_en": "Coco",
+      "titulo_es_latam": "Coco",
+      "anio": 2017,
+      "duracion_min": 105,
+      "bloque": "tarde",
+      "descripcion": "Miguel cruza a la Tierra de los Muertos en pleno Día de Muertos (especial 1-2 nov)."
+    },
+    {
+      "titulo_en": "The Book of Life",
+      "titulo_es_latam": "El libro de la vida",
+      "anio": 2014,
+      "duracion_min": 95,
+      "bloque": "tarde",
+      "descripcion": "Manolo viaja por los mundos de los Recordados y los Olvidados en Día de Muertos (especial 1-2 nov)."
+    }
+  ]
+}
