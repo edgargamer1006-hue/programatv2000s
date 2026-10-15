@@ -43,7 +43,7 @@ export default function ChannelGuide({
   const bodyScrollRef = useRef<HTMLDivElement>(null);
 
   const programs = theme.programs;
-  const haunted = theme.seasonMode === "halloween";
+  const skin = theme.skin;
   const hours = Array.from({ length: 24 }, (_, i) => i);
   const currentHour = Math.floor(minuteOfDay / 60);
 
@@ -83,8 +83,8 @@ export default function ChannelGuide({
 
       {isOpen && (
         <div
-          className={`channel-guide fixed inset-0 z-50 backdrop-blur-md flex flex-col ${haunted ? "" : "bg-black/92"}`}
-          style={haunted ? { background: "radial-gradient(ellipse at 50% 0%, #321454 0%, #07040e 52%)" } : undefined}
+          className="channel-guide fixed inset-0 z-50 backdrop-blur-md flex flex-col"
+          style={{ background: skin.guideBg }}
         >
           <div
             className="flex items-center justify-between px-4 sm:px-6 py-3 border-b-2"
@@ -93,12 +93,12 @@ export default function ChannelGuide({
             <div className="flex items-center gap-3">
               <div
                 className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-sm"
-                style={{ background: theme.accent, color: "#000" }}
+                style={{ background: theme.accent, color: skin.buttonText }}
               >
                 {theme.channelLogo}
               </div>
               <div>
-                <h2 className={`text-lg sm:text-xl font-black text-white ${theme.fontClass}`}>Guía de programación</h2>
+                <h2 className={`text-lg sm:text-xl leading-none ${skin.headingFont}`} style={{ color: skin.titleColor }}>Guía de programación</h2>
                 <p className="text-xs text-white/75">{theme.channelName} — {theme.name}</p>
               </div>
             </div>
@@ -215,18 +215,12 @@ export default function ChannelGuide({
                           <button
                             type="button"
                             onClick={() => setSelectedProgram(program)}
-                            className={`absolute top-1.5 h-[60px] px-2 py-1 text-left overflow-hidden ${haunted ? "tomb-card" : "rounded-md"}`}
+                            className={`absolute top-1.5 h-[60px] px-2 py-1 text-left overflow-hidden ${skin.cardClass}`}
                             style={{
                               left: `${leftPx}px`,
                               width: `${widthPx}px`,
-                              background: isSelected
-                                ? `linear-gradient(180deg, ${theme.accent}66, #2a1244)`
-                                : isCurrent
-                                  ? `linear-gradient(180deg, ${theme.accent}44, #1a0c28)`
-                                  : haunted
-                                    ? "linear-gradient(180deg, rgba(48,28,72,0.95), rgba(14,8,22,0.95))"
-                                    : "rgba(255,255,255,0.06)",
-                              border: `1px solid ${isSelected || isCurrent ? theme.accent : haunted ? "rgba(182,255,138,0.4)" : "rgba(255,255,255,0.16)"}`,
+                              background: isSelected || isCurrent ? skin.cardActive : skin.guideIdle,
+                              border: `1px solid ${isSelected || isCurrent ? theme.accent : skin.cardBorder}`,
                             }}
                           >
                             <p className="text-[10px] font-bold text-white truncate">{program.titulo}</p>
@@ -241,8 +235,7 @@ export default function ChannelGuide({
             </div>
 
             <div
-              className={`lg:w-96 flex-shrink-0 border-t lg:border-t-0 lg:border-l overflow-y-auto custom-scrollbar ${haunted ? "haunted-panel border-0" : ""}`}
-              style={haunted ? undefined : { borderColor: `${theme.accent}33`, background: "rgba(0,0,0,0.5)" }}
+              className={`lg:w-96 flex-shrink-0 border-t lg:border-t-0 lg:border-l overflow-y-auto custom-scrollbar ${skin.panelClass} border-0`}
             >
               {selectedProgram ? (
                 <div className="p-5">
@@ -259,7 +252,7 @@ export default function ChannelGuide({
                     </div>
                   </div>
 
-                  <h3 className={`text-lg font-black text-white mb-2 ${theme.fontClass}`}>{selectedProgram.titulo}</h3>
+                  <h3 className={`text-xl leading-tight mb-2 ${skin.headingFont}`} style={{ color: skin.titleColor }}>{selectedProgram.titulo}</h3>
                   <div className="flex flex-wrap items-center gap-2 mb-3">
                     <span className="text-xs px-2 py-0.5 rounded-full text-white" style={{ background: `${theme.accent}28` }}>
                       {formatMinute12(selectedProgram.startMinute)}
@@ -280,11 +273,8 @@ export default function ChannelGuide({
                         onSelectProgram(selectedProgram);
                         setIsOpen(false);
                       }}
-                      className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold transition-all active:scale-95 ${haunted ? "tomb-card" : "rounded-xl"}`}
-                      style={{
-                        background: haunted ? "#ff8c1a" : `linear-gradient(135deg, ${theme.accent}, ${theme.accent2})`,
-                        color: haunted ? "#1a0804" : "#000",
-                      }}
+                      className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold transition-all active:scale-95 ${skin.cardClass}`}
+                      style={{ background: skin.buttonBg, color: skin.buttonText }}
                     >
                       <Play size={16} aria-hidden="true" /> Ver ahora
                     </button>

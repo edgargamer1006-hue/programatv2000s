@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Power, Eye, EyeOff, Radio, Volume2, VolumeX } from "lucide-react";
-import type { Program, ThemeDecoration, SeasonMode } from "../types";
+import type { Program, ThemeDecoration, ThemeSkin } from "../types";
 import { elapsedSecondsInProgram } from "../lib/scheduler";
 import { formatMinute12 } from "../lib/mexico-time";
 import MexicoClock from "./MexicoClock";
@@ -18,8 +18,7 @@ interface RetroTVProps {
   onToggleSeen: () => void;
   themeName: string;
   decoration: ThemeDecoration;
-  fontClass: string;
-  seasonMode: SeasonMode;
+  skin: ThemeSkin;
 }
 
 export default function RetroTV({
@@ -34,8 +33,7 @@ export default function RetroTV({
   onToggleSeen,
   themeName,
   decoration,
-  fontClass,
-  seasonMode,
+  skin,
 }: RetroTVProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [poweredOn, setPoweredOn] = useState(true);
@@ -124,53 +122,33 @@ export default function RetroTV({
     video.play().catch(() => {});
   };
 
-  const ledColor = !poweredOn
-    ? "#333"
-    : seasonMode === "halloween" || seasonMode === "dia-muertos" || seasonMode === "pre-halloween"
-      ? "#ff6600"
-      : seasonMode === "navidad"
-        ? "#e63946"
-        : "#00b4ff";
+  const ledColor = poweredOn ? skin.led : "#333";
 
   const showVideo = Boolean(videoUrl) && !mediaError && !showStatic;
-  const haunted = seasonMode === "halloween";
 
   return (
     <div className="relative w-full max-w-4xl mx-auto">
       <div
         className="absolute inset-0 blur-3xl opacity-10 rounded-full pointer-events-none"
-        style={{ background: `radial-gradient(circle, ${haunted ? "#b6ff8a" : accent}, transparent 70%)` }}
+        style={{ background: `radial-gradient(circle, ${skin.brandColor}, transparent 70%)` }}
       />
 
-      <div
-        className={haunted ? "haunted-cabinet relative rounded-[1.7rem] p-3 sm:p-5" : "relative rounded-2xl p-4 sm:p-6 shadow-2xl"}
-        style={haunted ? undefined : {
-          background: "linear-gradient(145deg, #1a1a1e, #14141a, #0f0f11)",
-          border: "1px solid rgba(255,255,255,0.04)",
-          boxShadow: `0 0 30px ${accent}08, inset 0 1px 2px rgba(255,255,255,0.05), 0 16px 48px rgba(0,0,0,0.7)`,
-        }}
-      >
-        {haunted && (
-          <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-3xl drop-shadow" aria-hidden="true">🎃</span>
-        )}
-        <div className={`absolute top-2 left-3 flex gap-1 pointer-events-none ${haunted ? "text-base" : "text-[10px] opacity-60"}`} aria-hidden="true">
+      <div className={`${skin.cabinetClass} relative rounded-[1.7rem] p-3 sm:p-5`}>
+        <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-3xl drop-shadow" aria-hidden="true">{skin.crest}</span>
+        <div className="absolute top-2 left-3 flex gap-1 pointer-events-none text-base" aria-hidden="true">
           {decoration.frameIcons.slice(0, 3).map((icon, i) => (
             <span key={i} className="frame-icon-float" style={{ animationDelay: `${i * 0.5}s` }}>{icon}</span>
           ))}
         </div>
-        <div className={`absolute top-2 right-3 flex gap-1 pointer-events-none ${haunted ? "text-base" : "text-[10px] opacity-60"}`} aria-hidden="true">
+        <div className="absolute top-2 right-3 flex gap-1 pointer-events-none text-base" aria-hidden="true">
           {decoration.frameIcons.slice(3).map((icon, i) => (
             <span key={i} className="frame-icon-float" style={{ animationDelay: `${i * 0.7}s` }}>{icon}</span>
           ))}
         </div>
 
         <div
-          className={`relative rounded-lg overflow-hidden bg-black mx-auto mt-4 ${haunted ? "haunted-bezel crt-flicker" : ""}`}
-          style={{
-            aspectRatio: "4/3",
-            boxShadow: haunted ? undefined : `inset 0 0 80px rgba(0,0,0,0.9), inset 0 0 20px ${accent}08`,
-            border: haunted ? undefined : "2px solid #0a0a0c",
-          }}
+          className={`relative rounded-lg overflow-hidden bg-black mx-auto mt-6 ${skin.bezelClass} ${skin.flicker ? "crt-flicker" : ""}`}
+          style={{ aspectRatio: "4/3" }}
         >
           <div
             className="absolute inset-0 pointer-events-none z-30"
@@ -227,7 +205,7 @@ export default function RetroTV({
               {isLive && currentProgram && (
                 <div className="absolute bottom-0 left-0 right-0 z-20 px-4 py-2" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.88), transparent)" }}>
                   <div className="flex items-center gap-2">
-                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded live-pulse" style={{ background: accent, color: "#000" }}>EN VIVO</span>
+                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded live-pulse" style={{ background: accent, color: skin.buttonText }}>EN VIVO</span>
                     <p className="text-white text-xs sm:text-sm font-semibold truncate">{currentProgram.titulo}</p>
                   </div>
                   {nextProgram && (
@@ -258,7 +236,8 @@ export default function RetroTV({
           )}
         </div>
 
-        <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-3 px-1">
+        <div className="mt-4 rounded-xl px-2 py-2" style={{ background: "rgba(8,6,10,0.78)" }}>
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-1">
           <div className="flex items-center gap-3">
             <button
               type="button"
@@ -360,15 +339,16 @@ export default function RetroTV({
         </div>
 
         <div className="mt-2 flex items-center justify-center gap-2">
-          <span className={`text-[10px] tracking-[0.3em] uppercase ${haunted ? "text-[#ffb067]" : "text-zinc-400"}`}>RetroToon</span>
-          <span className={`text-[10px] ${haunted ? "text-[#d4ffb8]" : "text-zinc-500"}`}>•</span>
-          <span className={`text-[10px] tracking-wider ${haunted ? "text-[#ffe7c2] font-semibold" : `text-zinc-300 ${fontClass}`}`}>{themeName}</span>
+          <span className="text-[10px] tracking-[0.3em] uppercase" style={{ color: skin.brandColor }}>RetroToon</span>
+          <span className="text-[10px]" style={{ color: skin.mutedColor }}>•</span>
+          <span className="text-[10px] tracking-wider font-semibold" style={{ color: skin.titleColor }}>{themeName}</span>
+        </div>
         </div>
       </div>
 
       <div className="flex justify-between px-12 max-w-xs mx-auto mt-1.5" aria-hidden="true">
-        <div className={`w-3.5 h-5 rounded-b-md ${haunted ? "bg-gradient-to-b from-[#6a3d1c] to-[#1c100a]" : "bg-gradient-to-b from-[#1a1a1e] to-[#0f0f11]"}`} />
-        <div className={`w-3.5 h-5 rounded-b-md ${haunted ? "bg-gradient-to-b from-[#6a3d1c] to-[#1c100a]" : "bg-gradient-to-b from-[#1a1a1e] to-[#0f0f11]"}`} />
+        <div className={`w-3.5 h-5 rounded-b-md ${skin.feetClass}`} />
+        <div className={`w-3.5 h-5 rounded-b-md ${skin.feetClass}`} />
       </div>
     </div>
   );

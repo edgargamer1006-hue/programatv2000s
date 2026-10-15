@@ -2,13 +2,14 @@ import type { MonthTheme, SeasonMode, ThemeDecoration } from "./types";
 import { getCatalog } from "./data/catalog";
 import { getMexicoDateTime, mexicoWallTime } from "./lib/mexico-time";
 import { getDaySchedule } from "./lib/scheduler";
+import { skinHalloween, skinHarvest, skinNavidad, skinNino, skinOfrenda, skinSala, skinVerano } from "./theme/skins";
 
 /* ============================================================
  *  DECORACIONES TEMÁTICAS
  * ============================================================ */
 
 const decPreHalloween: ThemeDecoration = {
-  frameIcons: ["🎃", "🕷️", "🕸️", "🌙", "⭐", "📺"],
+  frameIcons: ["🍂", "🎃", "🍁", "🌙", "🌾", "📺"],
   headerBanner: "🎃 PRÓXIMAMENTE — ESPECIAL DE HALLOWEEN ESTE 1 DE OCTUBRE 👻",
   backgroundPattern: "pattern-pre-halloween",
   frameAccent: "#ff6600",
@@ -22,7 +23,7 @@ const decHalloween: ThemeDecoration = {
 };
 
 const decDiaMuertos: ThemeDecoration = {
-  frameIcons: ["💀", "🌼", "🕯️", "🦋", "🍬", "🎃"],
+  frameIcons: ["💀", "🌼", "🕯️", "🦋", "🍬", "🌸"],
   headerBanner: "🌼 DÍA DE MUERTOS — TRADICIÓN Y FOLCLOR 🕯️",
   backgroundPattern: "pattern-cempasuchil",
   frameAccent: "#ff8c00",
@@ -43,14 +44,14 @@ const decKids: ThemeDecoration = {
 };
 
 const decSummer: ThemeDecoration = {
-  frameIcons: ["☀️", "🏖️", "🏄", "🌊", "🍦", "🩴"],
+  frameIcons: ["☀️", "🌴", "🏄", "🌊", "🍦", "🩴"],
   headerBanner: "☀️ VACACIONES DE VERANO — AVENTURAS RETRO 24/7 🏄",
   backgroundPattern: "pattern-summer",
   frameAccent: "#ffbe0b",
 };
 
 const decNeutral: ThemeDecoration = {
-  frameIcons: ["📺", "🎮", "📡", "⭐", "🎬", "🎥"],
+  frameIcons: ["📺", "💡", "📡", "⭐", "🎬", "🎮"],
   headerBanner: "📺 RETRO TOON NETWORK — PROGRAMACIÓN CLÁSICA 24/7 📡",
   backgroundPattern: "pattern-neutral",
   frameAccent: "#00b4ff",
@@ -66,16 +67,17 @@ const themePreHalloween: MonthTheme = {
   catalogKey: "neutro",
   name: "Pre-Halloween",
   subtitle: "Cuenta regresiva al Especial de Terror",
-  accent: "#ff6600",
-  accent2: "#cc4400",
-  bgGradient: "from-[#0f0f11] via-[#1a1a1e] to-[#0f0f11]",
-  fontClass: "font-creepy",
+  accent: "#e8943a",
+  accent2: "#f0c060",
+  bgGradient: "from-[#1a100c] via-[#3a2218] to-[#1a100c]",
+  fontClass: "font-harvest",
   channelName: "RETRO TOON NETWORK",
   channelLogo: "RTN",
   effect: "pre-halloween",
   programs: [],
   decoration: decPreHalloween,
   seasonMode: "pre-halloween",
+  skin: skinHarvest,
 };
 
 const themeHalloween: MonthTheme = {
@@ -93,6 +95,7 @@ const themeHalloween: MonthTheme = {
   programs: [],
   decoration: decHalloween,
   seasonMode: "halloween",
+  skin: skinHalloween,
 };
 
 const themeDiaMuertos: MonthTheme = {
@@ -100,9 +103,9 @@ const themeDiaMuertos: MonthTheme = {
   catalogKey: "dia-muertos",
   name: "Especial Día de Muertos",
   subtitle: "Tradición y folclor latinoamericano",
-  accent: "#ff8c00",
-  accent2: "#9b2d9b",
-  bgGradient: "from-[#0f0f11] via-[#1a1018] to-[#0f0f11]",
+  accent: "#ffb000",
+  accent2: "#ff8ac4",
+  bgGradient: "from-[#160810] via-[#3a1428] to-[#160810]",
   fontClass: "font-festive",
   channelName: "RETRO TOON TRADICIÓN",
   channelLogo: "RTT",
@@ -110,6 +113,7 @@ const themeDiaMuertos: MonthTheme = {
   programs: [],
   decoration: decDiaMuertos,
   seasonMode: "dia-muertos",
+  skin: skinOfrenda,
 };
 
 const themeNavidad: MonthTheme = {
@@ -117,9 +121,9 @@ const themeNavidad: MonthTheme = {
   catalogKey: "navidad",
   name: "Especial Navideño",
   subtitle: "Magia de la Navidad retro 24/7",
-  accent: "#e63946",
-  accent2: "#06d6a0",
-  bgGradient: "from-[#0f0f11] via-[#0a1a12] to-[#0f0f11]",
+  accent: "#e23b4a",
+  accent2: "#f0c14a",
+  bgGradient: "from-[#0c1612] via-[#14281c] to-[#0c1612]",
   fontClass: "font-christmas",
   channelName: "RETRO TOON NAVIDAD",
   channelLogo: "RTN",
@@ -127,6 +131,7 @@ const themeNavidad: MonthTheme = {
   programs: [],
   decoration: decNavidad,
   seasonMode: "navidad",
+  skin: skinNavidad,
 };
 
 const themeKids: MonthTheme = {
@@ -134,9 +139,9 @@ const themeKids: MonthTheme = {
   catalogKey: "dianino",
   name: "Especial Día del Niño",
   subtitle: "Maratón infantil retro",
-  accent: "#00b4ff",
-  accent2: "#ffbe0b",
-  bgGradient: "from-[#0f0f11] via-[#0a1420] to-[#0f0f11]",
+  accent: "#3ec6ff",
+  accent2: "#ffe566",
+  bgGradient: "from-[#12162b] via-[#1c2448] to-[#12162b]",
   fontClass: "font-cartoon",
   channelName: "RETRO TOON KIDS",
   channelLogo: "RTK",
@@ -144,6 +149,7 @@ const themeKids: MonthTheme = {
   programs: [],
   decoration: decKids,
   seasonMode: "regular",
+  skin: skinNino,
 };
 
 const themeSummer: MonthTheme = {
@@ -151,16 +157,17 @@ const themeSummer: MonthTheme = {
   catalogKey: "verano",
   name: "Vacaciones de Verano",
   subtitle: "Aventuras de verano retro 24/7",
-  accent: "#ffbe0b",
-  accent2: "#ff6b00",
-  bgGradient: "from-[#0f0f11] via-[#1a140a] to-[#0f0f11]",
-  fontClass: "font-cartoon",
+  accent: "#ffd15c",
+  accent2: "#5ee0d0",
+  bgGradient: "from-[#1a1028] via-[#3a1840] to-[#1a1028]",
+  fontClass: "font-surf",
   channelName: "RETRO TOON SUMMER",
   channelLogo: "RTS",
   effect: "summer",
   programs: [],
   decoration: decSummer,
   seasonMode: "regular",
+  skin: skinVerano,
 };
 
 const themeNeutral: MonthTheme = {
@@ -168,16 +175,17 @@ const themeNeutral: MonthTheme = {
   catalogKey: "neutro",
   name: "Retro Toon Channel",
   subtitle: "Programación clásica 24/7",
-  accent: "#00b4ff",
-  accent2: "#ff006e",
-  bgGradient: "from-[#0f0f11] via-[#1a1a1e] to-[#0f0f11]",
-  fontClass: "font-retro",
+  accent: "#ffb067",
+  accent2: "#c5ccd6",
+  bgGradient: "from-[#161412] via-[#221e1a] to-[#161412]",
+  fontClass: "font-y2k",
   channelName: "RETRO TOON NETWORK",
   channelLogo: "RTN",
   effect: "none",
   programs: [],
   decoration: decNeutral,
   seasonMode: "regular",
+  skin: skinSala,
 };
 
 const themeNovember: MonthTheme = {
@@ -202,12 +210,36 @@ export function getSeasonMode(date: Date): SeasonMode {
   return "regular";
 }
 
-export function getActiveTheme(date: Date): { theme: MonthTheme; seasonMode: SeasonMode; isSpecialDay: boolean } {
+function themeByKey(key: string): MonthTheme | null {
+  switch (key) {
+    case "pre-halloween":
+      return themePreHalloween;
+    case "halloween":
+      return themeHalloween;
+    case "dia-muertos":
+      return themeDiaMuertos;
+    case "navidad":
+      return themeNavidad;
+    case "dianino":
+      return themeKids;
+    case "verano":
+      return themeSummer;
+    case "neutro":
+      return themeNeutral;
+    default:
+      return null;
+  }
+}
+
+export function getActiveTheme(date: Date, previewKey?: string | null): { theme: MonthTheme; seasonMode: SeasonMode; isSpecialDay: boolean; preview: boolean } {
+  const forced = previewKey ? themeByKey(previewKey) : null;
   const mode = getSeasonMode(date);
   const { month } = getMexicoDateTime(date);
 
   let base: MonthTheme;
-  switch (mode) {
+  if (forced) {
+    base = forced;
+  } else switch (mode) {
     case "pre-halloween":
       base = themePreHalloween;
       break;
@@ -229,7 +261,12 @@ export function getActiveTheme(date: Date): { theme: MonthTheme; seasonMode: Sea
 
   const programs = getDaySchedule(base.catalogKey, date, getCatalog(base.catalogKey));
   const isSpecialDay = mode !== "regular" || month === 4 || month === 7 || month === 8;
-  return { theme: { ...base, programs }, seasonMode: mode, isSpecialDay };
+  return {
+    theme: { ...base, programs },
+    seasonMode: forced ? forced.seasonMode : mode,
+    isSpecialDay,
+    preview: Boolean(forced),
+  };
 }
 
 /* ============================================================

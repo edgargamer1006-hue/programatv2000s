@@ -18,6 +18,49 @@ export type SeasonMode =
   | "navidad"
   | "regular";
 
+/** Identidad visual. Independiente del calendario: septiembre, verano y el resto tienen la suya. */
+export type SkinId = "harvest" | "halloween" | "ofrenda" | "navidad" | "nino" | "verano" | "sala";
+
+export interface ThemeSkin {
+  id: SkinId;
+  rootClass: string;
+  pageBg: string;
+  cabinetClass: string;
+  bezelClass: string;
+  feetClass: string;
+  panelClass: string;
+  cardClass: string;
+  crest: string;
+  flicker: boolean;
+  countdownLabel: string;
+  countdownIcon: string;
+  headingFont: string;
+  headingColor: string;
+  titleColor: string;
+  bannerColor: string;
+  daypartColor: string;
+  clockColor: string;
+  clockBg: string;
+  clockBorder: string;
+  unitColor: string;
+  unitBg: string;
+  unitBorder: string;
+  unitLabel: string;
+  colonColor: string;
+  subColor: string;
+  cardIdle: string;
+  cardActive: string;
+  cardBorder: string;
+  cardGlow: string;
+  guideBg: string;
+  guideIdle: string;
+  buttonBg: string;
+  buttonText: string;
+  brandColor: string;
+  mutedColor: string;
+  led: string;
+}
+
 export type Bloque = "mañana" | "tarde" | "noche";
 
 /** Pieza de catálogo, sin horario. El scheduler le asigna el minuto de inicio. */
@@ -78,4 +121,5 @@ export interface MonthTheme {
   programs: Program[];
   decoration: ThemeDecoration;
   seasonMode: SeasonMode;
+  skin: ThemeSkin;
 }
